@@ -1,5 +1,6 @@
 package com.uriallab.haat.haat.UI.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.uriallab.haat.haat.LocalNotification.TrackingDelegate;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.databinding.FragmentOrdersBinding;
 import com.uriallab.haat.haat.viewModels.OrdersViewModel;
@@ -30,7 +32,13 @@ public class OrdersFragment extends Fragment {
         FragmentOrdersBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_orders, container, false);
 
         binding.setOrdersVM(new OrdersViewModel(getActivity(), getChildFragmentManager()));
-
+        startService();
         return binding.getRoot();
+    }
+
+    public void startService() {
+        // TODO: 6/10/2020
+        Intent myService = new Intent(getContext(), TrackingDelegate.class);
+        getActivity().startService(myService);
     }
 }

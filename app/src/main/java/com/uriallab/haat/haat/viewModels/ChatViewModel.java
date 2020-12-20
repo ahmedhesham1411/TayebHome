@@ -14,13 +14,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eugeneek.smilebar.SmileBar;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,6 +43,8 @@ import com.uriallab.haat.haat.SharedPreferences.ConfigurationFile;
 import com.uriallab.haat.haat.UI.Activities.ChatActivity;
 import com.uriallab.haat.haat.UI.Activities.PaymentGateActivity;
 import com.uriallab.haat.haat.UI.Activities.TrackDriverActivity;
+import com.uriallab.haat.haat.UI.Adapters.CancelReasonAdapter;
+import com.uriallab.haat.haat.UI.CancelationReason;
 import com.uriallab.haat.haat.Utilities.Dialogs;
 import com.uriallab.haat.haat.Utilities.IntentClass;
 import com.uriallab.haat.haat.Utilities.LoadingDialog;
@@ -50,6 +57,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -83,6 +92,10 @@ public class ChatViewModel extends ViewModel {
 
     private LatLng clientLatLng, storeLatLng, driverLatLng;
 
+    private List<CancelationReason.ResultBean.ReasonsBean> cancelReasonList = new ArrayList<>();
+
+    public ObservableInt reasonId = new ObservableInt(0);
+
     public ChatViewModel(ChatActivity activity, String orderId) {
         this.activity = activity;
         this.orderId = orderId;
@@ -95,6 +108,8 @@ public class ChatViewModel extends ViewModel {
         }
 
         getChat(true);
+
+        getCancelReasons();
     }
 
     public void sendMessageAction() {
@@ -221,7 +236,7 @@ public class ChatViewModel extends ViewModel {
                     e.printStackTrace();
                 }
 
-                if (data.getResult().getOrder().getOrd_Driver_StatusID() == 3 &&
+                if (data.getResult().getOrder().getOrd_Driver_StatusID() == 2 &&
                         !data.getResult().getOrder().isOrd_Payment_Status())
                     isRecieved.set(true);
 
@@ -278,8 +293,103 @@ public class ChatViewModel extends ViewModel {
         });
     }
 
+    private void getCancelReasons() {
+        //final LoadingDialog loadingDialog = new LoadingDialog();
+        APIModel.getMethod(activity, "Client/CancellationReasons", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                Log.e("response", responseString + "Error");
+                switch (statusCode) {
+                    case 400:
+                        try {
+                            // Utilities.toastyError(activity, responseString + "    ");
+
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("error"))
+                                Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("Message"));
+                            else
+                                Utilities.toastyError(activity, responseString + "    ");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 500:
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("error"))
+                                Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("Message"));
+                            else
+                                Utilities.toastyError(activity, responseString + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        APIModel.handleFailure(activity, statusCode, responseString, new APIModel.RefreshTokenListener() {
+                            @Override
+                            public void onRefresh() {
+                                getCancelReasons();
+                            }
+                        });
+                        break;
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                Log.e("response", responseString);
+
+                Type dataType = new TypeToken<CancelationReason>() {
+                }.getType();
+                CancelationReason data = new Gson().fromJson(responseString, dataType);
+
+                cancelReasonList.addAll(data.getResult().getReasons());
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                // Dialogs.showLoading(activity, loadingDialog);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                // Dialogs.dismissLoading(loadingDialog);
+            }
+        });
+    }
+
     public void sendReport() {
         activity.sendReport();
+    }
+
+    public void cancelOrder() {
+        Dialog dialogCall = new Dialog(activity);
+        dialogCall.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogCall.setContentView(R.layout.custom_alert_dialog_cancel_order);
+        dialogCall.setCanceledOnTouchOutside(false);
+        dialogCall.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextView refuseClick = dialogCall.findViewById(R.id.no_id);
+        TextView confirmClick = dialogCall.findViewById(R.id.yes_id);
+        RecyclerView category_recycler = dialogCall.findViewById(R.id.category_recycler);
+
+        CancelReasonAdapter cancelReasonAdapter = new CancelReasonAdapter(cancelReasonList, reasonId);
+
+        category_recycler.setLayoutManager(new LinearLayoutManager(activity));
+        category_recycler.setAdapter(cancelReasonAdapter);
+
+        refuseClick.setOnClickListener(v -> dialogCall.dismiss());
+        confirmClick.setOnClickListener(v -> {
+            if (reasonId.get() == 0) {
+                Utilities.toastyError(activity, activity.getString(R.string.please_select_the_reason));
+            } else {
+                removeForReason(reasonId.get());
+                dialogCall.dismiss();
+            }
+        });
+        dialogCall.show();
     }
 
     public void callUser() {
@@ -418,9 +528,8 @@ public class ChatViewModel extends ViewModel {
                     bundle.putDouble("money", price);
                     bundle.putString("orderID", orderId);
                     bundle.putInt("type", 1);
-                    IntentClass.goToStartForResult(activity, PaymentGateActivity.class,103, bundle);
+                    IntentClass.goToStartForResult(activity, PaymentGateActivity.class, 103, bundle);
                 }
-
             }
         });
         dialog.show();
@@ -468,6 +577,68 @@ public class ChatViewModel extends ViewModel {
                 Log.e("response", responseString);
                 Utilities.toastySuccess(activity, activity.getString(R.string.pay_successfully));
                 rate();
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                Dialogs.showLoading(activity, loadingDialog);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                Dialogs.dismissLoading(loadingDialog);
+            }
+        });
+    }
+
+    private void removeForReason(int id) {
+        final LoadingDialog loadingDialog = new LoadingDialog();
+
+        JSONObject jsonParams = new JSONObject();
+        try {
+            jsonParams.put("OrderUID", orderId);
+            jsonParams.put("Ord_ClientCanslationReasonID", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        APIModel.postMethod(activity, "Client/RemoveOrderWithReason", jsonParams, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                Log.e("response", responseString + "Error");
+                switch (statusCode) {
+                    case 400:
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("error"))
+                                Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("Message"));
+                            else
+                                Utilities.toastyError(activity, responseString + "    ");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        APIModel.handleFailure(activity, statusCode, responseString, () -> removeForReason(id));
+                        break;
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                Log.e("response", responseString);
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    if (jsonObject.has("result"))
+                        Utilities.toastySuccess(activity, jsonObject.getJSONObject("result").getString("Message"));
+                    else
+                        Utilities.toastySuccess(activity, responseString + "    ");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                activity.finish();
             }
 
             @Override

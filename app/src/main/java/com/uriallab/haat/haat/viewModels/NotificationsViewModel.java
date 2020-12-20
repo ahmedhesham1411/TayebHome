@@ -79,7 +79,12 @@ public class NotificationsViewModel extends ViewModel {
                 lastPage = data.getResult().getEndPage();
 
                 if (data.getResult().getNotfications().size() > 0)
-                    fragment.updateRecycler(data.getResult().getNotfications());
+                    if (nextPage==1){
+                        fragment.updateRecycler1(data.getResult().getNotfications());
+
+                    }else {
+                        fragment.updateRecycler(data.getResult().getNotfications());
+                    }
                 else
                     isNoData.set(true);
             }

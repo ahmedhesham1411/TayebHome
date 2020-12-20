@@ -143,7 +143,7 @@ public class ChatActivity extends AppCompatActivity {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             recorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-            recorder.setAudioEncodingBitRate(16*44100);
+            recorder.setAudioEncodingBitRate(16 * 44100);
             recorder.setAudioSamplingRate(44100);
             recorder.setOutputFile(getFilename());
             recorder.setOnErrorListener(errorListener);
@@ -389,7 +389,7 @@ public class ChatActivity extends AppCompatActivity {
                     Log.e("IMAGE", "CAMERA_REQUEST Exception: " + e.getMessage());
                     e.printStackTrace();
                 }
-            }else if (requestCode == 103) {
+            } else if (requestCode == 103) {
                 if (data.getExtras().getBoolean("isPayed"))
                     viewModel.rate();
             }
@@ -402,7 +402,7 @@ public class ChatActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://176.9.164.57:898/typing");
+            uri = new URI("ws://176.9.164.57:501/typing");
         } catch (URISyntaxException e) {
             Log.e("WebSockettyping", "URISyntaxException");
             e.printStackTrace();

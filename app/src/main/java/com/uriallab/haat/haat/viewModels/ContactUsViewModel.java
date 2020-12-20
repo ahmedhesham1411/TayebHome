@@ -61,6 +61,10 @@ public class ContactUsViewModel {
         getContacts();
     }
 
+    public void call() {
+        IntentClass.goTodialPhoneNumber(activity, phone);
+    }
+
     public void whatsapp() {
         IntentClass.goTowhatsApp(activity, phone);
     }

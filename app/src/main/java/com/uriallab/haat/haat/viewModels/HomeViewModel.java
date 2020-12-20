@@ -53,7 +53,7 @@ public class HomeViewModel extends ViewModel {
         activity = fragment.getActivity();
         this.fragment = fragment;
 
-        getStores();
+        //getStores();
         getCategoryRequest();
     }
 
@@ -140,7 +140,7 @@ public class HomeViewModel extends ViewModel {
         };
     }
 
-    private void getCategoryRequest() {
+  /*  private void getCategoryRequest() {
         final LoadingDialog loadingDialog = new LoadingDialog();
 
         APIModel.getMethod(activity, "Client/GetCategory", new TextHttpResponseHandler() {
@@ -200,7 +200,68 @@ public class HomeViewModel extends ViewModel {
                 Dialogs.dismissLoading(loadingDialog);
             }
         });
-    }
+    }*/
+  private void getCategoryRequest() {
+      final LoadingDialog loadingDialog = new LoadingDialog();
+
+      APIModel.getMethod(activity, "Client/GetCategory", new TextHttpResponseHandler() {
+          @Override
+          public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+              Log.e("response", responseString + "Error");
+              switch (statusCode) {
+                  case 400:
+                      try {
+                          JSONObject jsonObject = new JSONObject(responseString);
+                          if (jsonObject.has("error"))
+                              Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("message"));
+                          else
+                              Utilities.toastyError(activity, responseString + "    ");
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                      break;
+                  default:
+                      APIModel.handleFailure(activity, statusCode, responseString, new APIModel.RefreshTokenListener() {
+                          @Override
+                          public void onRefresh() {
+                              getCategoryRequest();
+                          }
+                      });
+                      break;
+              }
+          }
+
+          @Override
+          public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+              Log.e("response", responseString);
+
+              Type dataType = new TypeToken<CategoryModel>() {
+              }.getType();
+              CategoryModel data = new Gson().fromJson(responseString, dataType);
+
+              try {
+                  listCategory.clear();
+                  listCategory.addAll(data.getResult().getCategory());
+                  listCategory.get(0).setSelected(true);
+                  fragment.initCategoryRecycler(listCategory);
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          }
+
+          @Override
+          public void onStart() {
+              super.onStart();
+              Dialogs.showLoading(activity, loadingDialog);
+          }
+
+          @Override
+          public void onFinish() {
+              super.onFinish();
+              Dialogs.dismissLoading(loadingDialog);
+          }
+      });
+  }
 
     public void hatService() {
         Bundle bundle = new Bundle();

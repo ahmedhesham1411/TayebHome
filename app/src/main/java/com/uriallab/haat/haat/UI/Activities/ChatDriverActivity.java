@@ -263,11 +263,6 @@ public class ChatDriverActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-            } else if (requestCode == 147) {
-                if (data.getExtras().getBoolean("sent")) {
-                    viewModel.iconsStatus.set(2);
-                    viewModel.getChat(false);
-                }
             } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
                 try {
 
@@ -287,23 +282,9 @@ public class ChatDriverActivity extends AppCompatActivity {
                     Log.e("IMAGE", "CAMERA_REQUEST Exception: " + e.getMessage());
                     e.printStackTrace();
                 }
-            } else if (requestCode == CAMERA_REQUEST2 && resultCode == RESULT_OK) {
-                try {
-
-                    Bitmap bitmapImage;
-
-                    try {
-                        bitmapImage = Camera.resizeBitmap(this, BitmapFactory.decodeFile(RealPathUtil.getRealPath(this, Uri.parse(currentPhotoPath))));
-                    } catch (Exception e) {
-                        bitmapImage = Camera.resizeBitmap(this, BitmapFactory.decodeFile(Camera.getRealPathFromURI(this, Uri.parse(currentPhotoPath))));
-                        e.printStackTrace();
-                    }
-                    viewModel.iconsStatus.set(3);
-                    viewModel.sendOrderImg(Camera.convertBitmapToBase64(bitmapImage));
-
-                } catch (Exception e) {
-                    Log.e("IMAGE", "CAMERA_REQUEST Exception: " + e.getMessage());
-                    e.printStackTrace();
+            } else if (requestCode == 147) {
+                if (data.getExtras().getBoolean("sent")) {
+                    viewModel.rate();
                 }
             } else if (requestCode == CheckoutActivity.REQUEST_CODE_CHECKOUT) {
                 switch (resultCode) {
@@ -454,7 +435,7 @@ public class ChatDriverActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://176.9.164.57:898/typing");
+            uri = new URI("ws://176.9.164.57:501/typing");
         } catch (URISyntaxException e) {
             Log.e("WebSockettyping", "URISyntaxException");
             e.printStackTrace();

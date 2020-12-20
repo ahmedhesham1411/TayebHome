@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cancelReasonVM"
+            type="com.uriallab.haat.CancelReasonViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lin1"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/colorBlue"
+            android:elevation="5dp"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:onClick="@{()->cancelReasonVM.back()}"
+                android:layout_marginStart="10dp"
+                android:id="@+id/frame_back"
+                android:layout_gravity="center"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+                <ImageView
+                    android:rotation="@{cancelReasonVM.rotation}"
+                    android:id="@+id/back_img"
+                    android:layout_gravity="center"
+                    android:background="@drawable/arrow_left"
+                    android:layout_width="12dp"
+                    android:layout_height="18dp" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/store_name"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_order_"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_marginEnd="10dp"
+                android:id="@+id/frame_share"
+                android:layout_gravity="center"
+                android:layout_width="35dp"
+                android:layout_height="35dp">
+
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_below="@id/lin1"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/order_number"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="viewStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        bind:ignore="RtlCompat" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="1dp"/>
+
+                    <EditText
+                        android:digits="0123456789"
+                        android:inputType="numberDecimal"
+                        android:text="@={cancelReasonVM.orderNumber}"
+                        bind:error="@{cancelReasonVM.orderNumberError}"
+                        android:gravity="center_vertical"
+                        android:textAlignment="viewStart"
+                        android:paddingStart="50dp"
+                        android:hint="@string/enter_order_num"
+                        android:paddingEnd="50dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/shape_rounded_dark_grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        bind:ignore="RtlCompat" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/cancel_reason"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginStart="20dp"
+                    android:textAlignment="viewStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    bind:ignore="RtlCompat" />
+
+                <EditText
+                    android:layout_marginTop="10dp"
+                    android:text="@={cancelReasonVM.reason}"
+                    bind:error="@{cancelReasonVM.reasonError}"
+                    android:gravity="top|start"
+                    android:padding="16dp"
+                    android:textAlignment="viewStart"
+                    android:paddingStart="8dp"
+                    android:hint="@string/enter_cancel_reason"
+                    android:paddingEnd="8dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:minHeight="180dp"
+                    android:background="@drawable/shape_rounded_dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:background="@color/colorMoov"
+            android:layout_alignParentBottom="true"
+            android:onClick="@{()->cancelReasonVM.cancelRequest()}"
+            android:textAllCaps="false"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:id="@+id/login_btn"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </RelativeLayout>
+
+</layout>

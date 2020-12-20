@@ -79,7 +79,7 @@ public class JourneyFragment extends Fragment {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://176.9.164.57:898/driver");
+            uri = new URI("ws://85.194.65.236:701/driver");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;

@@ -177,7 +177,7 @@ public class TrackDriverActivity extends AppCompatActivity implements OnMapReady
             URI uri;
             try {
                 // Connect to local host
-                uri = new URI("ws://176.9.164.57:898/client");// TODO: 7/26/2020
+                uri = new URI("ws://85.194.65.236:701/client");// TODO: 7/26/2020
             } catch (URISyntaxException e) {
                 e.printStackTrace();
                 return;

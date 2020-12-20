@@ -120,6 +120,8 @@
                     android:layout_weight="1"
                     android:layout_height="40dp">
                     <TextView
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/colorTextHint"
                         android:hint="@string/delivering_location"
                         android:singleLine="true"
                         android:ellipsize="marquee"
@@ -129,7 +131,6 @@
                         android:scrollHorizontally="true"
                         android:textAlignment="viewStart"
                         android:id="@+id/location_txt"
-                        android:textSize="14sp"
                         android:text="@{makeOrderVM.addressObservable}"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
@@ -194,6 +195,8 @@
                     android:layout_weight="1"
                     android:layout_height="40dp">
                     <TextView
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/colorTextHint"
                         android:hint="@string/receiving_location"
                         android:singleLine="true"
                         android:ellipsize="marquee"
@@ -203,7 +206,6 @@
                         android:scrollHorizontally="true"
                         android:textAlignment="viewStart"
                         android:id="@+id/distenation_txt"
-                        android:textSize="14sp"
                         android:text="@{makeOrderVM.distenationObservable}"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
@@ -246,9 +248,68 @@
             <TextView
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="20dp"
-                android:text="@string/delivering_time"
+                android:text="@string/order_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:onClick="@{()->makeOrderVM.dateTime()}"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/shape_rounded_dark_grey"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/colorTextHint"
+                        android:hint="@string/choose_date"
+                        android:text="@{makeOrderVM.dateObservable}"
+                        android:gravity="center_vertical"
+                        android:paddingStart="10dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:onClick="@{()->makeOrderVM.deliveringTime()}"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shape_rounded_dark_grey"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp">
+                    <TextView
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/colorTextHint"
+                        android:hint="@string/delivering_time"
+                        android:text="@{makeOrderVM.timeObservable}"
+                        android:gravity="center_vertical"
+                        android:paddingStart="10dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"/>
+
+                    <ImageView
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/time"
+                        android:backgroundTint="@color/colorTextHint"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:onClick="@{()->makeOrderVM.deliveringTime()}"
@@ -260,6 +321,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:background="@drawable/shape_rounded_dark_grey"
                     android:orientation="horizontal"
                     android:layout_width="0dp"

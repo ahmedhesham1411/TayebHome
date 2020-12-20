@@ -59,6 +59,85 @@ public class StoresViewModel extends ViewModel {
         }
     }
 
+   /* public void getStores(final String catType) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            final LoadingDialog loadingDialog = new LoadingDialog();
+
+            double lat = GlobalVariables.LOCATION_LAT;
+            double lng = GlobalVariables.LOCATION_LNG;
+            String urlType = "";
+            if (!catType.equals(""))
+                urlType = "&type=" + catType;
+            String url = "nearbysearch/json?key=" + activity.getResources().getString(R.string.api_key) +
+                    "&location=" + lat + "," + lng +
+                    "&rankby=distance" +
+                    urlType +
+                    "&language=" + ConfigurationFile.getCurrentLanguage(activity);
+            APIModel.getMethodForGoogle(activity, url, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.e("response", responseString + "Error");
+                    switch (statusCode) {
+                        default:
+                            APIModel.handleFailure(activity, statusCode, responseString, new APIModel.RefreshTokenListener() {
+                                @Override
+                                public void onRefresh() {
+                                    getStores(catType);
+                                }
+                            });
+                            break;
+                    }
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    Log.e("response", responseString);
+                    Type dataType = new TypeToken<GoogleStoresModel>() {
+                    }.getType();
+                    data = new Gson().fromJson(responseString, dataType);
+
+                    try {
+                        activity.pageToken = data.getNext_page_token();
+                    } catch (Exception e) {
+                        activity.pageToken = "";
+                        e.printStackTrace();
+                    }
+
+                    if (data.getResults().isEmpty()) {
+                        activity.binding.noData.setVisibility(View.VISIBLE);
+                        activity.binding.storesRecycler.setVisibility(View.GONE);
+                    } else {
+                        activity.binding.noData.setVisibility(View.GONE);
+                        activity.binding.storesRecycler.setVisibility(View.VISIBLE);
+                        activity.updateRecycler(data.getResults());
+                    }
+                }
+
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    activity.isLoading = true;
+                    Dialogs.showLoading(activity, loadingDialog);
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    activity.isLoading = false;
+                    Dialogs.dismissLoading(loadingDialog);
+                *//*    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Dialogs.dismissLoading(loadingDialog);
+                        }
+                    }, 500);*//*
+
+                }
+            });
+        }
+    }*/
+
     public void getStores(final String catType) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -67,6 +146,7 @@ public class StoresViewModel extends ViewModel {
             double lat = GlobalVariables.LOCATION_LAT;
             double lng = GlobalVariables.LOCATION_LNG;
             String urlType = "";
+            String aa = catType;
             if (!catType.equals(""))
                 urlType = "&type=" + catType;
             String url = "nearbysearch/json?key=" + activity.getResources().getString(R.string.api_key) +
@@ -139,9 +219,19 @@ public class StoresViewModel extends ViewModel {
 
     public void getSearchResult(final String search) {
         final LoadingDialog loadingDialog = new LoadingDialog();
+        double lat = GlobalVariables.LOCATION_LAT;
+        double lng = GlobalVariables.LOCATION_LNG;
+        String urlType = "";
 
-        String url = "textsearch/json?query=" + search + "&key=" + activity.getResources().getString(R.string.api_key) +
+        String url = "textsearch/json?query=" +  search + "&key="  +activity.getResources().getString(R.string.api_key)+
+                "&location=" + lat + "," + lng +
+                "&rankby=distance" +
+                urlType +
                 "&language=" + ConfigurationFile.getCurrentLanguage(activity);
+
+
+     /*   String url = "textsearch/json?query=" + search + "&key=" + activity.getResources().getString(R.string.api_key) +
+                "&language=" + ConfigurationFile.getCurrentLanguage(activity);*/
         APIModel.getMethodForGoogle(activity, url, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -193,12 +283,13 @@ public class StoresViewModel extends ViewModel {
             public void onFinish() {
                 super.onFinish();
                 activity.isLoading = false;
-                new Handler().postDelayed(new Runnable() {
+                Dialogs.dismissLoading(loadingDialog);
+             /*   new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Dialogs.dismissLoading(loadingDialog);
                     }
-                }, 1000);
+                }, 1000);*/
 
             }
         });
@@ -263,12 +354,13 @@ public class StoresViewModel extends ViewModel {
                 public void onFinish() {
                     super.onFinish();
                     activity.isLoading = false;
-                    new Handler().postDelayed(new Runnable() {
+                    Dialogs.dismissLoading(loadingDialog);
+/*                    new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Dialogs.dismissLoading(loadingDialog);
                         }
-                    }, 500);
+                    }, 500);*/
 
                 }
             });
@@ -288,12 +380,14 @@ public class StoresViewModel extends ViewModel {
             @Override
             public void afterTextChanged(final Editable editable) {
 
-                new Handler().postDelayed(new Runnable() {
+                getSearchResult(editable.toString());
+
+              /*  new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         getSearchResult(editable.toString());
                     }
-                }, 4000);
+                }, 4000);*/
 
             }
         };

@@ -85,10 +85,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         } else if (incomingList.get(position).getOrd_Client_StatusID() == 2) {
             holder.binding.orderStateImg.setImageResource(R.drawable.new_offer);
 
-            holder.binding.orderStateImg.setColorFilter(activity.getResources().getColor(R.color.colorOrange), PorterDuff.Mode.SRC_ATOP);
-            holder.binding.orderStateArrow.setColorFilter(activity.getResources().getColor(R.color.colorOrange), PorterDuff.Mode.SRC_ATOP);
+            holder.binding.orderStateImg.setColorFilter(activity.getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+            holder.binding.orderStateArrow.setColorFilter(activity.getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
 
-            holder.binding.orderStateTxt.setTextColor(activity.getResources().getColor(R.color.colorOrange));
+            holder.binding.orderStateTxt.setTextColor(activity.getResources().getColor(R.color.colorWhite));
             holder.binding.orderStateTxt.setText(activity.getString(R.string.new_offer));
         } else {
             holder.binding.orderStateImg.setImageResource(R.drawable.delivering);

@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
+        android:text="@string/cancelll"
         android:id="@+id/alert_text"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
@@ -17,7 +18,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:descendantFocusability="blocksDescendants"
+        android:id="@+id/category_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp"/>
+
     <CheckBox
+        android:visibility="gone"
+        android:id="@+id/ch1"
         android:textStyle="bold"
         android:text="@string/expinsive_price"
         android:layout_marginTop="10dp"
@@ -26,6 +38,8 @@
         android:layout_height="wrap_content"/>
 
     <CheckBox
+        android:visibility="gone"
+        android:id="@+id/ch2"
         android:textStyle="bold"
         android:text="@string/driver_ask_for_cancel"
         android:layout_marginTop="5dp"
@@ -34,6 +48,8 @@
         android:layout_height="wrap_content"/>
 
     <CheckBox
+        android:visibility="gone"
+        android:id="@+id/ch3"
         android:textStyle="bold"
         android:text="@string/no_need_for_order"
         android:layout_marginTop="5dp"
@@ -42,6 +58,8 @@
         android:layout_height="wrap_content"/>
 
     <CheckBox
+        android:visibility="gone"
+        android:id="@+id/ch4"
         android:textStyle="bold"
         android:text="@string/driver_not_accepting_online_payment"
         android:layout_marginTop="5dp"
@@ -50,6 +68,8 @@
         android:layout_height="wrap_content"/>
 
     <CheckBox
+        android:visibility="gone"
+        android:id="@+id/ch5"
         android:textStyle="bold"
         android:text="@string/driver_ask_for_contact_outside_the_application"
         android:layout_marginTop="5dp"

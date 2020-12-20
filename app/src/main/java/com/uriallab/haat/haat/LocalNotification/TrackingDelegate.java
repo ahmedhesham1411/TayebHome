@@ -160,7 +160,7 @@ public class TrackingDelegate extends Service {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://176.9.164.57:898/driver");
+            uri = new URI("ws://85.194.65.236:701/driver");
         } catch (URISyntaxException e) {
             Log.e("WebSocket", "URISyntaxException");
             e.printStackTrace();
@@ -247,7 +247,7 @@ public class TrackingDelegate extends Service {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://176.9.164.57:898/updateDriverLocation");
+            uri = new URI("ws://85.194.65.236:701/updateDriverLocation");
         } catch (URISyntaxException e) {
             Log.e("WebSocket", "URISyntaxException");
             e.printStackTrace();

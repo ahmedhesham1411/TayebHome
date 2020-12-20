@@ -22,9 +22,11 @@ import com.uriallab.haat.haat.API.APIModel;
 import com.uriallab.haat.haat.DataModels.CarModel;
 import com.uriallab.haat.haat.DataModels.CarTpeModel;
 import com.uriallab.haat.haat.DataModels.CarYearModel;
+import com.uriallab.haat.haat.DataModels.CategoryModel;
 import com.uriallab.haat.haat.DataModels.DriverRegisterModel;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.SharedPreferences.ConfigurationFile;
+import com.uriallab.haat.haat.SpinnerModel;
 import com.uriallab.haat.haat.UI.Activities.RegisterAsDriver.ThirdStepActivity;
 import com.uriallab.haat.haat.UI.Activities.SentSuccessfullyActivity;
 import com.uriallab.haat.haat.UI.MainActivity;
@@ -43,6 +45,10 @@ import java.util.List;
 import static com.uriallab.haat.haat.Utilities.GlobalVariables.FINISH_ACTIVITY_REGISTER;
 
 public class DriverRegisterThirdStepViewModel {
+
+    public String type = "";
+    public ArrayList<SpinnerModel> categoryList = new ArrayList<>();
+    public ObservableField<String> selectedValues = new ObservableField<>("");
 
     public ObservableInt rotation = new ObservableInt(0);
 
@@ -83,7 +89,9 @@ public class DriverRegisterThirdStepViewModel {
         carTypeList.add(activity.getResources().getString(R.string.car_type));
         carTypeIdList.add("0");
         yearList.add(activity.getResources().getString(R.string.produce_year));
-
+        carTypeList.add(activity.getResources().getString(R.string.car_type));
+        carTypeIdList.add("0");
+        getCategoryRequest();
         getCar();
 
         getCarType();
@@ -99,7 +107,13 @@ public class DriverRegisterThirdStepViewModel {
     private boolean validate() {
         Utilities.hideKeyboard(activity);
 
-        if (plateNumberObservable.get().isEmpty() ||
+        if (selectedValues.get().equals("")) {
+
+            if (selectedValues.get().equals(""))
+                Utilities.toastyRequiredFieldCustom(activity, activity.getString(R.string.please_category_));
+        }
+
+            if (plateNumberObservable.get().isEmpty() ||
                 car.equals("0") || carType.equals("0") || year.equals(activity.getResources().getString(R.string.produce_year)) ||
                 licensePic.equals("") || profilePic.equals("") || idPic.equals("")) {
 
@@ -153,6 +167,7 @@ public class DriverRegisterThirdStepViewModel {
             jsonParams.put("User_License_Number", plateNumberObservable.get());
             jsonParams.put("User_ImgUrl", profilePic);
             jsonParams.put("User_NationalID_ImgUrl", idPic);
+            jsonParams.put("User_Profession_And_Department_ID", "["+selectedValues.get()+"]"); // [2,4,5]
             jsonParams.put("User_License_ImgUrl", licensePic);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -232,6 +247,79 @@ public class DriverRegisterThirdStepViewModel {
         });
     }
 
+    private void getCategoryRequest() {
+        final LoadingDialog loadingDialog = new LoadingDialog();
+        APIModel.getMethod(activity, "Client/GetCategory", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                Log.e("response", responseString + "Error");
+
+                SpinnerModel stateVO = new SpinnerModel();
+                stateVO.setId(0);
+                stateVO.setTitle("");
+                stateVO.setSelected(false);
+                categoryList.add(stateVO);
+                activity.customSpinnerAdapter.notifyDataSetChanged();
+
+                switch (statusCode) {
+                    case 400:
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("error"))
+                                Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("message"));
+                            else
+                                Utilities.toastyError(activity, responseString + "    ");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        APIModel.handleFailure(activity, statusCode, responseString, () -> getCategoryRequest());
+                        break;
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                Log.e("response", responseString);
+
+                Type dataType = new TypeToken<CategoryModel>() {
+                }.getType();
+                CategoryModel data = new Gson().fromJson(responseString, dataType);
+
+                SpinnerModel stateVO = new SpinnerModel();
+                stateVO.setId(0);
+                stateVO.setTitle(activity.getResources().getString(R.string.category_));
+                stateVO.setSelected(false);
+                categoryList.add(stateVO);
+
+                for (int i = 0; i < data.getResult().getCategory().size(); i++) {
+                    stateVO = new SpinnerModel();
+                    if (ConfigurationFile.getCurrentLanguage(activity).equals("ar"))
+                        stateVO.setTitle(data.getResult().getCategory().get(i).getCategory_Title_AR());
+                    else
+                        stateVO.setTitle(data.getResult().getCategory().get(i).getCategory_Title_EN());
+                    stateVO.setSelected(false);
+                    stateVO.setId(data.getResult().getCategory().get(i).getCategoryUID());
+                    categoryList.add(stateVO);
+                }
+
+                activity.customSpinnerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                Dialogs.showLoading(activity, loadingDialog);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                Dialogs.dismissLoading(loadingDialog);
+            }
+        });
+    }
     private void getCar() {
         final LoadingDialog loadingDialog = new LoadingDialog();
         APIModel.getMethod(activity, "Setting/GetCars", new TextHttpResponseHandler() {

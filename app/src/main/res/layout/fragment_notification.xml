@@ -37,23 +37,38 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:visibility="@{notificationVM.isNoData? View.GONE : View.VISIBLE}"
-            android:paddingTop="8dp"
-            android:id="@+id/notification_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="8dp"/>
 
-        <TextView
-            android:visibility="@{notificationVM.isNoData? View.VISIBLE : View.GONE}"
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="@string/no_data"
-            android:textColor="@color/colorBlue"
-            android:textSize="18sp"/>
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="@{notificationVM.isNoData? View.GONE : View.VISIBLE}"
+                    android:paddingTop="8dp"
+                    android:id="@+id/notification_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:visibility="@{notificationVM.isNoData? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/no_data"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
 
     </LinearLayout>
 

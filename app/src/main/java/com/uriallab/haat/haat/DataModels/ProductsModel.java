@@ -30,7 +30,7 @@ public class ProductsModel {
 
             private int StoreID;
             private String product_icon;
-            private int product_price;
+            private String product_price;
             private String product_description;
             private String product_name;
             private String place_id;
@@ -62,7 +62,7 @@ public class ProductsModel {
                 this.product_icon = product_icon;
             }
 
-            public void setProduct_price(int product_price) {
+            public void setProduct_price(String product_price) {
                 this.product_price = product_price;
             }
 
@@ -90,7 +90,7 @@ public class ProductsModel {
                 return product_icon;
             }
 
-            public int getProduct_price() {
+            public String getProduct_price() {
                 return product_price;
             }
 

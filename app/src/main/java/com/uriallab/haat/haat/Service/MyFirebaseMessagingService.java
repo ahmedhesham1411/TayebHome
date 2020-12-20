@@ -235,17 +235,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int num = (int) System.currentTimeMillis();
         PendingIntent pendingIntent = PendingIntent.getActivity(c, num, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_logo);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 //        bitmap1 = Utilities.getRoundedCornerBitmap(bitmap1, 100);
 
         String channelId = getString(R.string.notification_channel_id);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.drawable.ic_stat_logo);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setLargeIcon(bitmap1);
             //   builder.setColor(getResources().getColor(R.color.colorWhite));
         } else {
-            builder.setSmallIcon(R.drawable.ic_stat_logo);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
 //            builder.setLargeIcon(bitmap2);
         }
 

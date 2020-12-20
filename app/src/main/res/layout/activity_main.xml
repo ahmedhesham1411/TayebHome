@@ -45,10 +45,10 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/store" />
+                    android:background="@drawable/setting" />
                 <TextView
                     android:layout_marginTop="1dp"
-                    android:textColor="@color/colorBlue"
+                    android:textColor="@color/colorMoov"
                     android:id="@+id/main_txt"
                     android:layout_marginBottom="5dp"
                     android:text="@string/stores"
@@ -109,7 +109,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/my_journey"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -118,10 +118,11 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/journey"
-                    android:layout_width="24dp"
+                    android:layout_width="30dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/journey_icon" />
+                    android:src="@drawable/kkkk"
+                    android:scaleType="fitXY"/>
                 <TextView
                     android:layout_marginTop="1dp"
                     android:textColor="@color/colorTextHint"

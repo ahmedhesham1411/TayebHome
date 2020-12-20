@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.Utilities.RealPathUtil;
+import com.uriallab.haat.haat.Utilities.Utilities;
 import com.uriallab.haat.haat.Utilities.camera.Camera;
 import com.uriallab.haat.haat.databinding.ActivityCreateInvoiceBinding;
 import com.uriallab.haat.haat.viewModels.CreateInvoiceViewModel;
@@ -29,7 +31,22 @@ public class CreateInvoiceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_invoice);
+
+        Bundle bundle = getIntent().getBundleExtra("data");
+
+        String name = Utilities.getColoredSpanned(getString(R.string.alert), "#B72222");
+        String surName = Utilities.getColoredSpanned(getString(R.string.alert_),"#2FA532");
+
+        binding.alertTxt.setText(Html.fromHtml(name+" "+surName));
+
+        viewModel = new CreateInvoiceViewModel(this, bundle.getDouble("price"), bundle.getString("orderId"));
+
+        binding.setCreateInvoiceVM(viewModel);
+
+      /*  super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_invoice);
 
         Bundle bundle = getIntent().getBundleExtra("data");
@@ -49,10 +66,10 @@ public class CreateInvoiceActivity extends AppCompatActivity {
 
                 viewModel.imgObservable.set("");
             }
-        });
+        });*/
     }
 
-    @Override
+ /*   @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             super.onActivityResult(requestCode, resultCode, data);
@@ -82,5 +99,5 @@ public class CreateInvoiceActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

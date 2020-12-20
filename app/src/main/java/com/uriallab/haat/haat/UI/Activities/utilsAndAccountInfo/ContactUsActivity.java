@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.Utilities.RealPathUtil;
@@ -34,6 +35,14 @@ public class ContactUsActivity extends AppCompatActivity {
         viewModel = new ContactUsViewModel(this);
 
         binding.setContactUsVM(viewModel);
+
+        binding.openWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.haat.com.sa"));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     @Override

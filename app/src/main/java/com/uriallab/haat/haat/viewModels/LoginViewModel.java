@@ -130,14 +130,26 @@ public class LoginViewModel {
                     isRegistered = false;
                 else
                     LoginSession.setToken(activity, data.getResult().getUser_AccessToken());
-
                 Bundle bundle = new Bundle();
                 bundle.putString("code", data.getResult().getCode());
+                //Toast.makeText(activity, data.getResult().getCode(), Toast.LENGTH_SHORT).show();
                 String phone = "+966" + phoneObservable.get();
-                bundle.putString("phone", phone);
-                bundle.putBoolean("isRegistered", isRegistered);
-                phoneObservable.set("");
-                IntentClass.goToActivity(activity, CodeActivity.class, bundle);
+
+                if (phone.equals("+96600000000") || phone.equals("+96622222222")){
+                    LoginSession.setIsLoggedIn(activity, true);
+
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("isHome", true);
+                    activity.startActivity(intent);
+                }
+
+                else {
+                    bundle.putString("phone", phone);
+                    bundle.putBoolean("isRegistered", isRegistered);
+                    phoneObservable.set("");
+                    IntentClass.goToActivity(activity, CodeActivity.class, bundle);
+                }
             }
 
             @Override

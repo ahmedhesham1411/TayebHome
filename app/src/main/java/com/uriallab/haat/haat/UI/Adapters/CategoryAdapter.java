@@ -1,6 +1,7 @@
 package com.uriallab.haat.haat.UI.Adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import com.uriallab.haat.haat.DataModels.CategoryModel;
 import com.uriallab.haat.haat.Interfaces.CategoryClick;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.SharedPreferences.ConfigurationFile;
+import com.uriallab.haat.haat.UI.Activities.makeOrder.MakeOrderFirstStepActivity;
 import com.uriallab.haat.haat.Utilities.GlobalVariables;
+import com.uriallab.haat.haat.Utilities.IntentClass;
 import com.uriallab.haat.haat.databinding.ItemCategoryBinding;
 
 import java.util.List;
@@ -63,7 +66,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             GlobalVariables.makeOrderModel.setCategory_Id(incomingList.get(position).getCategory_Id());
             GlobalVariables.makeOrderModel.setCategory_AuthorityId(incomingList.get(position).getCategory_AuthorityId());
 
-            categoryClick.categoryClick(incomingList.get(position).getCategory_Type(), category);
+            categoryClick.categoryClick(incomingList.get(position).getCategory_Type(), incomingList.get(position).getCategoryUID());
+
+          /*  Bundle bundle = new Bundle();
+            bundle.putString("storeName", incomingList.get(position).getCategory_Type());
+            //bundle.putString("shopImg", img);
+            bundle.putInt("categoryId",  incomingList.get(position).getCategoryUID());
+            bundle.putBoolean("isService", false);
+            IntentClass.goToActivity(activity, MakeOrderFirstStepActivity.class, bundle);
+            String aa ;*/
+
+            //categoryClick.categoryClick(incomingList.get(position).getCategory_Type(), category, String.valueOf(incomingList.get(position).getCategoryUID()));
         });
     }
 

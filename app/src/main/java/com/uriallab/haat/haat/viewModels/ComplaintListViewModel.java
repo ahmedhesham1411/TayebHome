@@ -20,6 +20,7 @@ import androidx.databinding.ObservableInt;
 public class ComplaintListViewModel {
 
     public ObservableBoolean isNoData = new ObservableBoolean(false);
+    public ObservableBoolean isFinishedObservable = new ObservableBoolean(false);
 
     public ObservableInt rotation = new ObservableInt(0);
 

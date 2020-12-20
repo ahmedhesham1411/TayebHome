@@ -13,6 +13,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
+import com.uriallab.haat.CancelOrderActivity;
 import com.uriallab.haat.haat.LocalNotification.TrackingDelegate;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.SharedPreferences.ConfigurationFile;
@@ -94,6 +95,11 @@ public class MoreViewModel {
             else
                 Utilities.toastyError(activity, activity.getString(R.string.only_driver));
         }
+    }
+
+    public void cancelOrder() {
+        if (LoginSession.isLoggedIn(activity))
+            IntentClass.goToActivity(activity, CancelOrderActivity.class, null);
     }
 
     public void openComment() {

@@ -27,9 +27,9 @@ public class LoadingDialog extends DialogFragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.loading_dialog, container, false);
 
-        ImageView imageView = view.findViewById(R.id.loader_img);
+     /*   ImageView imageView = view.findViewById(R.id.loader_img);
 
-        Glide.with(this).load(R.drawable.loader).into(imageView);
+        Glide.with(this).load(R.drawable.loader).into(imageView);*/
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);

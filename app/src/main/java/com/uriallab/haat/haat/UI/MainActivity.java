@@ -6,19 +6,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +35,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -51,6 +57,7 @@ import com.uriallab.haat.haat.UI.Fragments.MoreFragment;
 import com.uriallab.haat.haat.UI.Fragments.NotificationFragment;
 import com.uriallab.haat.haat.UI.Fragments.OrdersFragment;
 import com.uriallab.haat.haat.Utilities.Dialogs;
+import com.uriallab.haat.haat.Utilities.GPSTracker;
 import com.uriallab.haat.haat.Utilities.GlobalVariables;
 import com.uriallab.haat.haat.Utilities.IntentClass;
 import com.uriallab.haat.haat.Utilities.LoadingDialog;
@@ -73,7 +80,7 @@ import static com.uriallab.haat.haat.Utilities.GlobalVariables.NOTIFICATIONS_FRA
 import static com.uriallab.haat.haat.Utilities.GlobalVariables.ORDERS_FRAGMENT_ID;
 import static com.uriallab.haat.haat.Utilities.GlobalVariables.ORDERS_FRAGMENT_TAG;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding binding;
 
@@ -119,10 +126,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        if (LoginSession.isLoggedIn(this)) {
-            profileData();
+        if (LoginSession.isLoggedIn(this)){
 
-            updateFcmToken();
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    profileData();
+
+                    updateFcmToken();
+                }
+            }, 4000);
+
+
+
         }
 
         fragmentManager = getSupportFragmentManager();
@@ -142,8 +159,14 @@ public class MainActivity extends AppCompatActivity {
                     + "\t" + getIntent().getExtras().getString("orderID"));
 
             if (Integer.parseInt(getIntent().getExtras().getString("key")) == -1) {
-                pushFragment(MAIN_FRAGMENT_ID, null);
                 editLayout(MAIN_FRAGMENT_TAG);
+                final Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pushFragment(MAIN_FRAGMENT_ID, null);
+                    }
+                }, 500);
             } else if (Integer.parseInt(getIntent().getExtras().getString("key")) == -2) {
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("type", 1);
@@ -248,9 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 Dialogs.showLoginDialog(this);
         });
 
-        binding.myProfile.setOnClickListener(view -> {
-            pushFragment(GlobalVariables.MORE_FRAGMENT_ID, null);
-        });
+        binding.myProfile.setOnClickListener(view -> pushFragment(GlobalVariables.MORE_FRAGMENT_ID, null));
 
     }
 
@@ -258,38 +279,35 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        try {
-            if (requestCode == 123) {
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == 123) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                    if (LoginSession.getUserData(MainActivity.this).getResult().getUserData().isIsDelivery()) {
-                        startService();
-                    }
-
-                    fusedLocationClient.getLastLocation()
-                            .addOnSuccessListener(this, location -> {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    GlobalVariables.LOCATION_LAT = location.getLatitude();
-                                    GlobalVariables.LOCATION_LNG = location.getLongitude();
-
-                                    Log.e("fusedLocation", GlobalVariables.LOCATION_LAT + " " + GlobalVariables.LOCATION_LNG);
-                                    Log.e("fusedLocation", location.getLatitude() + " " + location.getLongitude());
-                                }
-                            });
-
-                    finish();
-                    startActivity(getIntent());
-
-
-//                    GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-//                    GlobalVariables.LOCATION_LAT = gpsTracker.getLocation().getLatitude();
-//                    GlobalVariables.LOCATION_LNG = gpsTracker.getLocation().getLongitude();
+                if (LoginSession.getUserData(MainActivity.this).getResult().getUserData().isIsDelivery()) {
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startService();
+                        }
+                    }, 4000);
                 }
+
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(this, location -> {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                GlobalVariables.LOCATION_LAT = location.getLatitude();
+                                GlobalVariables.LOCATION_LNG = location.getLongitude();
+
+                                Log.e("fusedLocation", GlobalVariables.LOCATION_LAT + " " + GlobalVariables.LOCATION_LNG);
+                                Log.e("fusedLocation", location.getLatitude() + " " + location.getLongitude());
+                            }
+                        });
+
+                finish();
+                startActivity(getIntent());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -359,10 +377,10 @@ public class MainActivity extends AppCompatActivity {
         binding.profile.clearAnimation();
         binding.journey.clearAnimation();
 
-        binding.main.setImageResource(R.drawable.store);
+        binding.main.setImageResource(R.drawable.setting);
         binding.notificationImg.setImageResource(R.drawable.notification);
         binding.ordersImg.setImageResource(R.drawable.orders);
-        binding.journey.setImageResource(R.drawable.journey_icon);
+        binding.journey.setImageResource(R.drawable.kkkk);
         binding.profile.setImageResource(R.drawable.profile);
 
         binding.main.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
@@ -385,24 +403,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (fragmentTag.equals(MAIN_FRAGMENT_TAG)) {
             binding.main.startAnimation(rotateAnimation);
-            binding.mainTxt.setTextColor(getResources().getColor(R.color.colorBlue));
-            binding.main.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
+            binding.mainTxt.setTextColor(getResources().getColor(R.color.colorGreen));
+            binding.main.setColorFilter(getResources().getColor(R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
         } else if (fragmentTag.equals(ORDERS_FRAGMENT_TAG)) {
             binding.ordersImg.startAnimation(rotateAnimation);
-            binding.ordersTxt.setTextColor(getResources().getColor(R.color.colorBlue));
-            binding.ordersImg.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
+            binding.ordersTxt.setTextColor(getResources().getColor(R.color.colorGreen));
+            binding.ordersImg.setColorFilter(getResources().getColor(R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
         } else if (fragmentTag.equals(NOTIFICATIONS_FRAGMENT_TAG)) {
             binding.notificationImg.startAnimation(rotateAnimation);
-            binding.notificationTxt.setTextColor(getResources().getColor(R.color.colorBlue));
-            binding.notificationImg.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
+            binding.notificationTxt.setTextColor(getResources().getColor(R.color.colorGreen));
+            binding.notificationImg.setColorFilter(getResources().getColor(R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
         } else if (fragmentTag.equals(JOURNEY_FRAGMENT_TAG)) {
             binding.journey.startAnimation(rotateAnimation);
-            binding.journeyTxt.setTextColor(getResources().getColor(R.color.colorBlue));
-            binding.journey.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
+            binding.journeyTxt.setTextColor(getResources().getColor(R.color.colorGreen));
+            binding.journey.setColorFilter(getResources().getColor(R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
         } else if (fragmentTag.equals(MORE_FRAGMENT_TAG)) {
             binding.profile.startAnimation(rotateAnimation);
-            binding.profileTxt.setTextColor(getResources().getColor(R.color.colorBlue));
-            binding.profile.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
+            binding.profileTxt.setTextColor(getResources().getColor(R.color.colorGreen));
+            binding.profile.setColorFilter(getResources().getColor(R.color.colorGreen), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -441,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void profileData() {
-        final LoadingDialog loadingDialog = new LoadingDialog();
+        //final LoadingDialog loadingDialog = new LoadingDialog();
         APIModel.getMethod(this, "Authorization/GetProfile", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
@@ -471,7 +489,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (LoginSession.getUserData(MainActivity.this).getResult().getUserData().isIsDelivery()) {
                     binding.myJourney.setVisibility(View.VISIBLE);
-                    startService();
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startService();
+                        }
+                    }, 4000);
                 }
 
                 //startService();// TODO: 6/10/2020
@@ -480,13 +504,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStart() {
                 super.onStart();
-                Dialogs.showLoading(MainActivity.this, loadingDialog);
+                //Dialogs.showLoading(MainActivity.this, loadingDialog);
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                Dialogs.dismissLoading(loadingDialog);
+                //Dialogs.dismissLoading(loadingDialog);
             }
         });
     }
@@ -559,41 +583,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void buildAlertMessageNoGps() {
-
-        if (isLocationEnabled()) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
-            final String message = "Your Location seems to be disabled, do you want to enable it?";
-
-            builder.setMessage(message)
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface d, int id) {
-                                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                    d.dismiss();
-                                }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface d, int id) {
-                                    d.cancel();
-                                }
-                            });
-            builder.create().show();
-        }
-    }
-
-    private boolean isLocationEnabled() {
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            return true;
-        }
-        return false;
-    }
-
     private void startService() {
-        Log.e("Tracking_service", "startService" );
         Intent myService = new Intent(this, TrackingDelegate.class);
         startService(myService);
     }

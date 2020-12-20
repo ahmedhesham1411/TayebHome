@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">HAAT|هات</string>
-    <string name="app_name_2">هات</string>
+    <string name="app_name">Tayeb</string>
+    <string name="app_name_2">Tayeb</string>
     <string name="notification_channel_id">Hat</string>
     <string name="api_key" translatable="false">AIzaSyAmD_A7N-SI2JbkhGh4xY_OFip7GtQRZfg</string>
     <string name="no_network">هناك خطأ ما ، يرجى المحاولة مرة أخرى</string>
@@ -32,7 +32,7 @@
     <string name="no_data">لا توجد بيانات</string>
     <string name="notifications">الإشعارات</string>
     <string name="orders">طلباتي</string>
-    <string name="journey">توصيلاتي</string>
+    <string name="journey">اعمالى</string>
     <string name="me">أنا</string>
     <string name="search_for_store">إبحث عن متجر</string>
     <string name="all">الكل</string>
@@ -51,7 +51,7 @@
     <string name="stores_info">طلبات نشطة</string>
     <string name="delivering_location">موقع التسليم</string>
     <string name="receiving_location">موقع الإستلام</string>
-    <string name="recieving_location">موقع الإستلام</string>
+    <string name="recieving_location">موقع العميل</string>
     <string name="email">البريد الإلكتروني</string>
     <string name="enter_email">أدخل البريد الإلكتروني</string>
     <string name="password">كلمة المرور</string>
@@ -103,15 +103,15 @@
     <string name="cancel_order">إلغاء الطلب</string>
     <string name="waiting_offers">في إنتظار العروض</string>
     <string name="order_has_been_sent">طلبك تم إرساله سوف يقوم مناديبنا بإرسال العروض الأن</string>
-    <string name="already_to_delivered">أنا مستعد أوصل هذا الطلب</string>
-    <string name="report">شكوي</string>
+    <string name="already_to_delivered">أنا مستعد للقيام بالخدمة </string>
+    <string name="report">شكوى</string>
     <string name="write_your_message">اكتب رسالتك</string>
-    <string name="complaint_details">تفاصيل الشكوي</string>
+    <string name="complaint_details">تفاصيل الشكوى</string>
     <string name="please_select_reason">الرجاء تحديد السبب</string>
     <string name="reason">السبب</string>
-    <string name="enter_complaint_details">إضافة تفاصيل الشكوي</string>
+    <string name="enter_complaint_details">إضافة تفاصيل الشكوى</string>
     <string name="please_select_the_reason">الرجاء تحديد السبب</string>
-    <string name="send_complaint">إرسال الشكوي</string>
+    <string name="send_complaint">إرسال الشكوى</string>
     <string name="add_attachment">إضافة مرفق</string>
     <string name="rate_user">تقييم العميل</string>
     <string name="rate">تقييم</string>
@@ -135,7 +135,7 @@
     <string name="changed_successfully">تم التغيير بنجاح</string>
     <string name="edited_successfully">تم التعديل بنجاح</string>
     <string name="delivering_time_">وقت التوصيل</string>
-    <string name="please_delivering_time_">الرجاء تحديد وقت التوصيل</string>
+    <string name="please_delivering_time_">الرجاء تحديد وقت الخدمة</string>
     <string name="distance_from_you">يبعد عنك</string>
     <string name="save">حفظ</string>
     <string name="edit_password">تعديل كلمة المرور</string>
@@ -146,7 +146,7 @@
     <string name="reenter_new_password">إعادة كلمة المرور الجديدة</string>
     <string name="enter_new_password">أدخل كلمة المرور الجديدة</string>
     <string name="setting_">إعدادات عامة</string>
-    <string name="complaint_list">قائمة الشكاوي المقدمة</string>
+    <string name="complaint_list">قائمة الشكاوى المقدمة</string>
     <string name="copouns">الكوبونات</string>
     <string name="language_setting">إعدادات اللغة</string>
     <string name="policy">شروط الإستخدام</string>
@@ -158,7 +158,7 @@
     <string name="english">English</string>
     <string name="lorem_ipsum">شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام شروط الاستخدام</string>
     <string name="lorem_ipsum_2"> سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية  سياسة الخصوصية سياسة الخصوصية </string>
-    <string name="complaints">الشكاوي المقدمة</string>
+    <string name="complaints">الشكاوى المقدمة</string>
     <string name="notes">ملاحظات</string>
     <string name="attachment">المرفقات</string>
     <string name="accepted">راضي</string>
@@ -227,9 +227,9 @@
     <string name="message_content">نص الرسالة</string>
     <string name="ask">استفسار</string>
     <string name="suggestion">إقتراح</string>
-    <string name="complaint">شكوي</string>
+    <string name="complaint">شكوى</string>
     <string name="attach_img">ارفع صورة</string>
-    <string name="stores">المتاجر</string>
+    <string name="stores">الخدمات</string>
     <string name="subscribe_as_driver">الاشتراك كموصل</string>
     <string name="something_wrong">حدث شئ ما خطأ</string>
     <string name="pay_successfully">تمت عملية الدفع</string>
@@ -273,7 +273,7 @@
     <string name="eligible">مؤهل</string>
     <string name="stopped">موقوف</string>
     <string name="places_around_you">القائمة والأسعار ...</string>
-    <string name="hat_card">هات كارد</string>
+    <string name="hat_card">نقل عفش</string>
     <string name="hat_service">هات خدمة</string>
     <string name="site">الموقع</string>
     <string name="map">الخريطة</string>
@@ -324,4 +324,29 @@
     <string name="identity_type">نوع الهوية</string>
     <string name="please_choose_identity_type">الرجاء تحديد نوع الهوية</string>
     <string name="car">السيارة</string>
+    <string name="openn">فتح</string>
+    <string name="should_gps">يجب تحديد الموقع</string>
+    <string name="please_delivering_date_">الرجاء تحديد تاريخ الخدمة </string>
+    <string name="enter_cancel_reason">أدخل سبب الإلغاء</string>
+    <string name="enter_order_num">أدخل رقم الطلب</string>
+    <string name="cancel_order_">إلغاء طلب</string>
+    <string name="cancel_reason">سبب الإلغاء</string>
+    <string name="choose_date">برجاء تحديد التاريخ</string>
+    <string name="order_duration">مدة الطلب</string>
+    <string name="cancelll">هل فعلا تريد الغاء الطلب ؟</string>
+    <string name="alert">تنبيه:</string>
+    <string name="alert_"> فى حال قبول العرض من العميل وتم إلغاء الطلب يرجى التواصل مع إدارة التطبيق من خلال صفحة حسابي لعدم إحتساب العمولة.</string>
+    <string name="service_done">تم تنفيذ الخدمة</string>
+    <string name="back_">رجوع</string>
+    <string name="confirm_order">تنفيذ الطلب</string>
+    <string name="call_instructions_">يرجى عدم الضغط عليها فى حال لم تقوم بتنفيذ الخدمة وزيارة إلغاء الطلب من صفحة حسابي</string>
+    <string name="enter_goods_fee">أدخل تكلفة المشتريات</string>
+    <string name="total_fee_">المبلغ الإجمالى</string>
+    <string name="goods_fee">تكلفة المشتريات</string>
+    <string name="service_fee">تكلفة الخدمة</string>
+    <string name="send_invoices">أرسل الفواتير</string>
+    <string name="category_">المهنة والقسم</string>
+    <string name="please_category_">برجاء إختيار المهنة والقسم</string>
+
+
 </resources>

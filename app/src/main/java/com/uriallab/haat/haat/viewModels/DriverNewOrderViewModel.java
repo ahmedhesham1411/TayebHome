@@ -93,8 +93,11 @@ public class DriverNewOrderViewModel extends ViewModel {
                 activity.binding.ratesNumberVal.setText(data.getResult().getOrder().getClient_Count_Rate() + "");
                 activity.binding.starBar.setRating(data.getResult().getOrder().getClient_Rate());
 
-                shopLat = Double.parseDouble(data.getResult().getOrder().getShop_Lat());
-                shopLng = Double.parseDouble(data.getResult().getOrder().getShop_Lng());
+                try {
+                    shopLat = Double.parseDouble(data.getResult().getOrder().getShop_Lat());
+                    shopLng = Double.parseDouble(data.getResult().getOrder().getShop_Lng());
+                }catch (Exception e){}
+
                 clientLat = Double.parseDouble(data.getResult().getOrder().getClient_Lat());
                 clientLng = Double.parseDouble(data.getResult().getOrder().getClient_Lng());
 

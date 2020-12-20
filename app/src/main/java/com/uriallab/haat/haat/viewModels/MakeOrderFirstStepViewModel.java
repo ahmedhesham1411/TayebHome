@@ -1,6 +1,7 @@
 package com.uriallab.haat.haat.viewModels;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -47,24 +48,55 @@ public class MakeOrderFirstStepViewModel {
     private MakeOrderFirstStepActivity activity;
 
     private String storeName, shopImg;
-
+    int categoryId;
     public List<String> listImg = new ArrayList<>();
 
     private boolean isService;
 
-    public MakeOrderFirstStepViewModel(MakeOrderFirstStepActivity activity, double lat, double lng, String storeName, String shopImg, boolean isService) {
+
+    public MakeOrderFirstStepViewModel(MakeOrderFirstStepActivity activity, String storeName, int categoryId, String shopImg, boolean isService) {
         this.activity = activity;
-        this.lat = lat;
-        this.lng = lng;
         this.storeName = storeName;
         this.shopImg = shopImg;
+        this.categoryId = categoryId;
         this.isService = isService;
 
         if (ConfigurationFile.getCurrentLanguage(activity).equals("ar"))
             rotate.set(180);
     }
 
+
     public void nextStep() {
+        Utilities.hideKeyboard(activity);
+        detailsError.set(null);
+        if (details.get().equals("")) {
+            if (details.get().equals(""))
+                detailsError.set(activity.getString(R.string.please_enter_order_details));
+        } else {
+            Intent intent = new Intent(activity, MakeOrderStepTwoActivity.class);
+            GlobalVariables.makeOrderModel = new MakeOrderModel();
+            GlobalVariables.makeOrderModel.setImages(listImg);
+            GlobalVariables.makeOrderModel.setCatId(String.valueOf(categoryId));
+            if (isValidCoupon.get())
+                GlobalVariables.makeOrderModel.setCoupon(coupon.get());
+            else
+                GlobalVariables.makeOrderModel.setCoupon("");
+            if (!isService) {
+                GlobalVariables.makeOrderModel.setService(false);
+                //GlobalVariables.makeOrderModel.setShopImg(shopImg);
+               // GlobalVariables.makeOrderModel.setStoreName(storeName);
+               // GlobalVariables.makeOrderModel.setLat(lat);
+                //GlobalVariables.makeOrderModel.setLng(lng);
+            } else
+                GlobalVariables.makeOrderModel.setService(true);
+
+            GlobalVariables.makeOrderModel.setDetails(details.get());
+            activity.startActivity(intent);
+        }
+    }
+
+
+ /*   public void nextStep() {
         Utilities.hideKeyboard(activity);
         detailsError.set(null);
         if (details.get().equals("")) {
@@ -96,7 +128,7 @@ public class MakeOrderFirstStepViewModel {
             GlobalVariables.makeOrderModel.setDetails(detailsTxt);
             activity.startActivity(intent);
         }
-    }
+    }*/
 
     public void checkCoupon() {
         Utilities.hideKeyboard(activity);

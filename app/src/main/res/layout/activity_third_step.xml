@@ -79,7 +79,7 @@
 
 
                 <TextView
-                    android:text="@string/car"
+                    android:text="@string/category_"
                     android:textColor="@color/colorBlack"
                     android:layout_marginTop="30dp"
                     android:layout_marginStart="20dp"
@@ -97,7 +97,7 @@
                     android:layout_height="40dp">
                     <Spinner
                         android:layout_gravity="center_vertical"
-                        android:id="@+id/car_spinner"
+                        android:id="@+id/car_type_spinner1"
                         android:textAlignment="viewStart"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
@@ -106,9 +106,10 @@
                         android:layout_height="36dp" />
 
                     <ImageView
+                        android:backgroundTint="@color/colorDarkGrey"
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
-                        android:id="@+id/car_arrow"
+                        android:id="@+id/type_arrow1"
                         android:rotation="270"
                         android:layout_marginEnd="20dp"
                         android:layout_gravity="center_vertical"
@@ -155,6 +156,46 @@
                         android:layout_width="10dp"
                         android:layout_height="16dp" />
                 </RelativeLayout>
+
+                <TextView
+                    android:text="@string/car"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp"
+                    android:textAlignment="viewStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_rounded_dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+                    <Spinner
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/car_spinner"
+                        android:textAlignment="viewStart"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:background="@drawable/shape_rounded_dark_grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp" />
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/car_arrow"
+                        android:rotation="270"
+                        android:layout_marginEnd="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/arrow_left"
+                        android:layout_width="10dp"
+                        android:layout_height="16dp" />
+                </RelativeLayout>
+
 
                 <TextView
                     android:text="@string/produce_year"

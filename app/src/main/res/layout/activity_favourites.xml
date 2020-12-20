@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="favouritesVM"
             type="com.uriallab.haat.haat.viewModels.FavouritesViewModel" />
@@ -90,11 +91,20 @@
             android:layout_height="250dp">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="@{favouritesVM.isNoData?View.GONE:View.VISIBLE}"
                 android:id="@+id/recycler_favourites"
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:nestedScrollingEnabled="true"
                 android:layout_height="wrap_content"/>
+
+            <TextView
+                android:visibility="@{favouritesVM.isNoData?View.VISIBLE:View.GONE, default=gone}"
+                android:id="@+id/no_data"
+                android:text="@string/no_data"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 

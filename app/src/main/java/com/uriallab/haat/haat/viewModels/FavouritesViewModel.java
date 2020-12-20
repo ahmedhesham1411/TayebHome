@@ -2,6 +2,7 @@ package com.uriallab.haat.haat.viewModels;
 
 import android.util.Log;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
 
 import com.google.gson.Gson;
@@ -19,6 +20,8 @@ import com.uriallab.haat.haat.Utilities.Utilities;
 import java.lang.reflect.Type;
 
 public class FavouritesViewModel {
+
+    public ObservableBoolean isNoData = new ObservableBoolean(false);
 
     public ObservableInt rotate = new ObservableInt(0);
 
@@ -39,6 +42,7 @@ public class FavouritesViewModel {
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
                 Log.e("response", responseString + "Error");
+                isNoData.set(true);
                 switch (statusCode) {
                     default:
                         APIModel.handleFailure(activity, statusCode, responseString, new APIModel.RefreshTokenListener() {
@@ -60,8 +64,10 @@ public class FavouritesViewModel {
                 FavModel data = new Gson().fromJson(responseString, dataType);
                 if (data.getResult().getFavoritelocations().size() > 0)
                     activity.initRecycler(data.getResult().getFavoritelocations());
-                else
-                    Utilities.toastyError(activity, activity.getString(R.string.no_data));
+                else{
+                    //Utilities.toastyError(activity, activity.getString(R.string.no_data));
+                    isNoData.set(true);
+                }
             }
 
             @Override

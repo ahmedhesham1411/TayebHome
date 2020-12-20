@@ -2,16 +2,23 @@ package com.uriallab.haat.haat.UI.Adapters;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +29,7 @@ import com.uriallab.haat.haat.DataModels.GoogleStoresModel;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.SharedPreferences.ConfigurationFile;
 import com.uriallab.haat.haat.UI.Activities.makeOrder.StoreDetailsActivity;
+import com.uriallab.haat.haat.Utilities.GPSTracker;
 import com.uriallab.haat.haat.Utilities.GlobalVariables;
 import com.uriallab.haat.haat.Utilities.IntentClass;
 import com.uriallab.haat.haat.Utilities.Utilities;
@@ -85,12 +93,74 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresView
         Picasso.get().load(photoUrl).into(holder.binding.storeImg);
 
         holder.itemView.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("placeId", incomingList.get(position).getPlace_id());
-            bundle.putBoolean("isFromServer", false);
-            IntentClass.goToActivity(activity, StoreDetailsActivity.class, bundle);
+
+            LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                showCustomDialog();
+            }
+            else {
+                try {
+                    GPSTracker gpsTracker = new GPSTracker(activity.getApplicationContext());
+                    GlobalVariables.LOCATION_LAT = gpsTracker.getLocation().getLatitude();
+                    GlobalVariables.LOCATION_LNG = gpsTracker.getLocation().getLongitude();
+                    saveLat(activity.getApplicationContext(), String.valueOf(gpsTracker.getLocation().getLatitude()));
+                    saveLng(activity.getApplicationContext(), String.valueOf(gpsTracker.getLocation().getLongitude()));
+                    GlobalVariables.LOCATION_LNG = Double.parseDouble(GetLng(activity.getApplicationContext()));
+                    GlobalVariables.LOCATION_LAT = Double.parseDouble(GetLat(activity.getApplicationContext()));
+                }catch (Exception e){}
+
+                Bundle bundle = new Bundle();
+                bundle.putString("placeId", incomingList.get(position).getPlace_id());
+                bundle.putBoolean("isFromServer", false);
+                IntentClass.goToActivity(activity, StoreDetailsActivity.class, bundle);
+            }
+
+
+
         });
 
+    }
+
+    public static void saveLng(Context context, String Token){
+        SharedPreferences pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Lng", Token);
+        editor.commit();
+    }
+
+    public static void saveLat(Context context, String Token){
+        SharedPreferences pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Lat", Token);
+        editor.commit();
+    }
+
+    public static String GetLng(Context context){
+        SharedPreferences pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        return pref.getString("Lng","31.2731497");
+    }
+    public static String GetLat(Context context){
+        SharedPreferences pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        return pref.getString("Lat","29.9434477");
+    }
+
+    private void showCustomDialog() {
+        ViewGroup viewGroup = activity.findViewById(android.R.id.content);
+        final View dialogView = LayoutInflater.from(activity).inflate(R.layout.custom_alert_dialog_gps, viewGroup, false);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        Button gps_btn= dialogView.findViewById(R.id.gps_btn);
+
+        gps_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                alertDialog.dismiss();
+            }
+        });
     }
 
     private void getAddressFromLatLng(final Activity activity, final TextView textView, final LatLng latLng) {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +35,7 @@ public class APIModel {
     public final static int take = 20;
     public final static int take_2 = 10;
 //    public final static String BASE_URL = "http://apidev.haatapp.com/";
-    public final static String BASE_URL = "http://api.haatapp.com/";
+    public final static String BASE_URL = "http://85.194.65.236:600/";
 //    public final static String BASE_URL = "https://www.haatapp.com/";
     public final static String BASE_URL_GOOGLE = "https://maps.googleapis.com/maps/api/place/";
     public final static String BASE_URL_GOOGLE2 = "https://maps.googleapis.com/maps/api";
@@ -143,6 +144,7 @@ public class APIModel {
 
     public static AsyncHttpClient getMethodForGoogle(Activity currentActivity, String url, TextHttpResponseHandler textHttpResponseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(200000);
         if (Utilities.checkNetworkConnectivity(currentActivity)) {
             KeyStore trustStore = null;
             try {
@@ -195,6 +197,11 @@ public class APIModel {
 
     public static AsyncHttpClient postMethod(Context currentActivity, String url, JSONObject jsonParams, TextHttpResponseHandler textHttpResponseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(290000);
+
+      /*  client.setResponseTimeout(290000);
+        client.setMaxRetriesAndTimeout(0,290000);*/
+
 
         if (Utilities.checkNetworkConnectivity(currentActivity)) {
             KeyStore trustStore = null;
@@ -205,6 +212,9 @@ public class APIModel {
                 socketFactory.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
                 client = new AsyncHttpClient();
                 client.setSSLSocketFactory(socketFactory);
+                client.setTimeout(300000);
+             /*   client.setResponseTimeout(290000);
+                client.setMaxRetriesAndTimeout(0,290000);*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,7 +230,7 @@ public class APIModel {
             StringEntity entity = null;
             entity = new StringEntity(jsonParams.toString(), HTTP.UTF_8);
 
-            client.post(currentActivity, BASE_URL + url, entity, "application/json;charset=utf-8", textHttpResponseHandler);
+            client.post(currentActivity, BASE_URL + url, entity, "application/json", textHttpResponseHandler);
             //   client.post(BASE_URL + url, params, textHttpResponseHandler);
             Log.e("params", jsonParams.toString());
             Log.e("BASE_URL", BASE_URL + url);

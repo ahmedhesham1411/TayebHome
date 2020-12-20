@@ -138,7 +138,7 @@ public class EditProfileActivity extends AppCompatActivity {
         //binding.arrowPhone.setImageResource(R.drawable.edit);
         binding.arrowBirthday.setImageResource(R.drawable.edit);
         binding.spinnerArrow.setImageResource(R.drawable.arrow_left);
-       // binding.profileImg.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
+        // binding.profileImg.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.arrowName.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.arrowEmail.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         //binding.arrowPhone.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);

@@ -42,10 +42,6 @@ public class MakeOrderFirstStepActivity extends AppCompatActivity implements Del
 
     private String storeName, shopImg;
 
-    public ObservableField<String> selectedProducts = new ObservableField<>("");
-
-    private double lat, lng;
-
     private boolean isService = true;
 
     @Override
@@ -62,28 +58,13 @@ public class MakeOrderFirstStepActivity extends AppCompatActivity implements Del
 
         if (!bundle.getBoolean("isService")) {
             isService = false;
-            storeName = bundle.getString("storeName");
+            //storeName = bundle.getString("storeName");
             shopImg = bundle.getString("shopImg");
-            lat = bundle.getDouble("lat");
-            lng = bundle.getDouble("lng");
-
-            Gson gson = new Gson();
-            StoreProductsModel storeProductsModel = gson.fromJson(bundle.getString("myjson"), StoreProductsModel.class);
-
-            if (storeProductsModel.getProductBeans().size() > 0) {
-                initRecyclerProducts(storeProductsModel.getProductBeans());
-
-                String temp = getString(R.string.orders_)+"\n";
-                for (int i = 0; i < storeProductsModel.getProductBeans().size(); i++) {
-                    temp += ( storeProductsModel.getProductBeans().get(i).getName() + " " +
-                            getString(R.string.quantity) + " : " + storeProductsModel.getProductBeans().get(i).getQuantity())+"\n";
-                }
-                selectedProducts.set(temp);
-            } else
-                binding.recyclerProducts.setVisibility(View.GONE);
         }
 
-        viewModel = new MakeOrderFirstStepViewModel(this, lat, lng, storeName, shopImg, isService);
+        int categoryId = bundle.getInt("categoryId");
+
+        viewModel = new MakeOrderFirstStepViewModel(this, storeName, categoryId, shopImg, isService);
 
         binding.setMakeOrderVM(viewModel);
 
@@ -102,12 +83,6 @@ public class MakeOrderFirstStepActivity extends AppCompatActivity implements Del
         ImagesAdapter imagesAdapter = new ImagesAdapter(this, imageList, this);
         binding.recyclerAttachment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerAttachment.setAdapter(imagesAdapter);
-    }
-
-    private void initRecyclerProducts(List<StoreProductsModel.ProductBean> productBeanList) {
-        StoreProductsAdapter productsAdapter = new StoreProductsAdapter(this, productBeanList, selectedProducts);
-        binding.recyclerProducts.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerProducts.setAdapter(productsAdapter);
     }
 
     @Override

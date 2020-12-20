@@ -363,7 +363,7 @@ public class ChatDriverViewModel extends ViewModel {
         });
     }
 
-    private void rate() {
+    public void rate() {
         dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_alert_dialog_rate);
@@ -389,6 +389,8 @@ public class ChatDriverViewModel extends ViewModel {
             }
         });
         dialog.show();
+
+
     }
 
     public void sendOrderImg(final String img) {

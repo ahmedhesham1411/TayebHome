@@ -4,7 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.StrictMode;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.DatePicker;
 
@@ -31,7 +35,14 @@ import com.uriallab.haat.haat.Utilities.camera.Camera;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 
 public class EditProfileViewModel {
@@ -83,16 +94,35 @@ public class EditProfileViewModel {
         final LoadingDialog loadingDialog = new LoadingDialog();
 
         JSONObject jsonParams = new JSONObject();
-        try {
-            jsonParams.put("User_Full_Nm", userNameObservable.get());
-            jsonParams.put("User_Phone", phoneObservable.get());
-            jsonParams.put("User_Mail", emailObservable.get());
-            jsonParams.put("User_BirthDate", birthdayObservable.get());
-            jsonParams.put("User_GenderID", gender);
-            if (!profileImgObservable.get().equals(""))
-                jsonParams.put("User_ImgUrl", profileImgObservable.get());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (profileImgObservable.get().equals("")){
+            try {
+                Dialogs.showLoading(activity, loadingDialog);
+                String aaa = LoginSession.getUserData(activity).getResult().getUserData().getUser_ImgUrl();
+
+                String ddddd = convertUrlToBase64(APIModel.BASE_URL+aaa);
+
+                jsonParams.put("User_Full_Nm", userNameObservable.get());
+                jsonParams.put("User_Phone", phoneObservable.get());
+                jsonParams.put("User_Mail", emailObservable.get());
+                jsonParams.put("User_BirthDate", birthdayObservable.get());
+                jsonParams.put("User_GenderID", gender);
+                jsonParams.put("User_ImgUrl", ddddd);
+                Dialogs.dismissLoading(loadingDialog);
+
+            }catch (Exception e){}
+        }
+        else {
+            try {
+                jsonParams.put("User_Full_Nm", userNameObservable.get());
+                jsonParams.put("User_Phone", phoneObservable.get());
+                jsonParams.put("User_Mail", emailObservable.get());
+                jsonParams.put("User_BirthDate", birthdayObservable.get());
+                jsonParams.put("User_GenderID", gender);
+                if (!profileImgObservable.get().equals(""))
+                    jsonParams.put("User_ImgUrl", profileImgObservable.get());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         APIModel.postMethod(activity, "Authorization/UpdateProfile", jsonParams, new TextHttpResponseHandler() {
@@ -136,7 +166,6 @@ public class EditProfileViewModel {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
                 Log.e("response", responseString);
-
                 profileData();
             }
 
@@ -278,5 +307,68 @@ public class EditProfileViewModel {
         } else {
             Camera.showGalleryFromActivity(activity);
         }
+    }
+
+
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String convert(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP).replace("\n\t", "");
+    }
+
+    private String getByteArrayFromImageURL(String url) {
+
+        try {
+            URL imageUrl = new URL(url);
+            URLConnection ucon = imageUrl.openConnection();
+            InputStream is = ucon.getInputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, read);
+            }
+            baos.flush();
+            return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+        }
+        return null;
+    }
+
+    public String convertUrlToBase64(String url) {
+        URL newurl;
+        Bitmap bitmap;
+        String base64 = "";
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            newurl = new URL(url);
+            bitmap = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            base64 = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64;
     }
 }

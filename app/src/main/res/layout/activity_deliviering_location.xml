@@ -142,10 +142,10 @@
                     android:layout_height="30dp">
 
                     <ImageView
-                        android:layout_gravity="center"
-                        android:background="@{dLocationVM.isFav? @drawable/ic_star_orange : @drawable/ic_star_border_grey}"
                         android:layout_width="24dp"
-                        android:layout_height="24dp"/>
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:background="@{dLocationVM.isFav? @drawable/ic_star_orange : @drawable/ic_star_border_grey}" />
 
                 </FrameLayout>
 

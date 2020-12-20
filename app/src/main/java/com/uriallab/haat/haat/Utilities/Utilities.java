@@ -67,6 +67,11 @@ public class Utilities {
         return networkInfo != null && networkInfo.isConnected();
     }
 
+    public static String getColoredSpanned(String text, String color) {
+        String input = "<font color=" + color + ">" + text + "</font>";
+        return input;
+    }
+
     public static void noInternet(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Internet connection");

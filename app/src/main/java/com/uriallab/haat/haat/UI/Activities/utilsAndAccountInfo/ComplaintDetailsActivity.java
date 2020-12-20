@@ -33,11 +33,17 @@ public class ComplaintDetailsActivity extends AppCompatActivity {
         binding.complaintId.setText(itemsBean.getComplaintUID()+"");
         binding.complaintDetails.setText(itemsBean.getComplaint_Desc());
 
-        if (!itemsBean.getComplaint_ImgUrl().equals("error")) {
-            Picasso.get().load(APIModel.BASE_URL + itemsBean.getComplaint_ImgUrl()).into(binding.attachImg);
-            binding.noAttachment.setVisibility(View.GONE);
-            binding.attachImg.setVisibility(View.VISIBLE);
+        try {
+            if (!itemsBean.getComplaint_ImgUrl().equals("error")) {
+                Picasso.get().load(APIModel.BASE_URL + itemsBean.getComplaint_ImgUrl()).into(binding.attachImg);
+                binding.noAttachment.setVisibility(View.GONE);
+                binding.attachImg.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
         }
+
+
+
 
         if (ConfigurationFile.getCurrentLanguage(this).equals("ar"))
             binding.reasonId.setText(itemsBean.getReason_Ar_Nm());
@@ -47,5 +53,15 @@ public class ComplaintDetailsActivity extends AppCompatActivity {
         Picasso.get().load(APIModel.BASE_URL + itemsBean.getFrom_Img_Url()).placeholder(R.drawable.profile).into(binding.profileImg);
 
         binding.setComplaintVM(new ComplaintDetailsViewModel(this, itemsBean));
+
+        binding.appFeadback.setText(itemsBean.getApp_Feadback());
+
+        if (itemsBean.getComplaint_Status_ID() == 1) {
+            binding.details.setText(getString(R.string.waiting_processed));
+            binding.details.setTextColor(getResources().getColor(R.color.colorMoov));
+        } else {
+            binding.details.setText(getString(R.string.proessed));
+            binding.details.setTextColor(getResources().getColor(R.color.colorBlue));
+        }
     }
 }

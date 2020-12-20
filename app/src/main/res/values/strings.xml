@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">HAAT|هات</string>
-    <string name="app_name_2">HAAT</string>
+    <string name="app_name">Tayeb</string>
+    <string name="app_name_2">Tayeb</string>
     <string name="notification_channel_id">Hat</string>
     <string name="api_key" translatable="false">AIzaSyAmD_A7N-SI2JbkhGh4xY_OFip7GtQRZfg</string>
     <string name="no_network">Something wrong please try again</string>
@@ -230,7 +230,7 @@
     <string name="suggestion">suggestion</string>
     <string name="complaint">complaint</string>
     <string name="attach_img">attach image</string>
-    <string name="stores">Stores</string>
+    <string name="stores">Services</string>
     <string name="subscribe_as_driver">subscribe as driver</string>
     <string name="something_wrong">something wrong</string>
     <string name="pay_successfully">Payment completed</string>
@@ -276,7 +276,7 @@
     <string name="eligible">eligible</string>
     <string name="stopped">stopped</string>
     <string name="places_around_you">menu and prices ...</string>
-    <string name="hat_card">Haat Card</string>
+    <string name="hat_card">Move furniture</string>
     <string name="hat_service">Haat Service</string>
     <string name="site">location</string>
     <string name="map">map</string>
@@ -324,7 +324,33 @@
     <string name="region">region</string>
     <string name="please_choose_region">please choose region</string>
     <string name="please_choose_city">please choose city</string>
-    <string name="identity_type">نوع الهوية</string>
-    <string name="please_choose_identity_type">الرجاء تحديد نوع الهوية</string>
-    <string name="car">السيارة</string>
+    <string name="identity_type">identity type</string>
+    <string name="please_choose_identity_type">please choose identity type</string>
+    <string name="car">car model</string>
+    <string name="openn">open</string>
+    <string name="should_gps">location is required</string>
+    <string name="please_delivering_date_">please select date</string>
+    <string name="enter_order_num">enter order number</string>
+    <string name="enter_cancel_reason">enter cancel reason</string>
+    <string name="cancel_order_">cancel order</string>
+    <string name="cancel_reason">cancel reason</string>
+    <string name="choose_date">choose a date</string>
+    <string name="order_duration">order duration</string>
+    <string name="cancelll">are you sure you want to cancel order ? </string>
+    <string name="service_done">The service has been done</string>
+    <string name="back_">back</string>
+    <string name="confirm_order">confirm order</string>
+    <string name="call_instructions_">Please do not click on it in case you did not implement the service and visit cancel the request from the My Account page</string>
+    <string name="alert">Warning:</string>
+    <string name="alert_">In the event that the offer is accepted by the customer and the request is canceled, please contact the application administration through the My Account page to not calculate the commission.</string>
+    <string name="send_invoices">Submit invoices</string>
+    <string name="service_fee">cost of the service</string>
+    <string name="goods_fee">cost of purchases</string>
+    <string name="total_fee_">Total amount</string>
+    <string name="enter_goods_fee">Enter cost of purchases</string>
+    <string name="category_">Profession and department</string>
+    <string name="please_category_">please choose Profession and department</string>
+
+
+
 </resources>

@@ -58,15 +58,37 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:onClick="@{()->chatVM.cancelOrder()}"
                 android:id="@+id/report_lin"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_width="35dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+                <FrameLayout
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/circle_red"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp">
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:background="@drawable/close"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"/>
+                </FrameLayout>
+
+                <TextView
+                    android:textSize="@dimen/_8ssp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/cancel_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
+
 
         </LinearLayout>
 

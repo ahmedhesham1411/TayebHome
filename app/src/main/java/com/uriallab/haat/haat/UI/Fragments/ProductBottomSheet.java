@@ -91,9 +91,9 @@ public class ProductBottomSheet extends BottomSheetDialogFragment {
             IntentClass.goToActivity(activity, PhotoViewActivity.class, bundle);
         });
 
-        tPrice = product.getProduct_price();
+        tPrice = Double.parseDouble(product.getProduct_price());
 
-        price.setText(product.getProduct_price() + " " + activity.getString(R.string.currency));
+        price.setText(Double.parseDouble(product.getProduct_price()) + " " + activity.getString(R.string.currency));
 
         plus.setOnClickListener(v -> {
             String quantityTxt = quantity.getText().toString();
@@ -102,7 +102,7 @@ public class ProductBottomSheet extends BottomSheetDialogFragment {
 
             quantity.setText(productQuantity + "");
 
-            tPrice = (Integer.parseInt(quantity.getText().toString()) * product.getProduct_price());
+            tPrice = (Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(product.getProduct_price()));
 
             price.setText(tPrice + " " + activity.getString(R.string.currency));
             priceTxt.setText(tPrice + "" );
@@ -117,7 +117,7 @@ public class ProductBottomSheet extends BottomSheetDialogFragment {
                 quantity.setText(productQuantity + "");
             }
 
-            tPrice = (Integer.parseInt(quantity.getText().toString()) * product.getProduct_price());
+            tPrice = (Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(product.getProduct_price()));
 
             price.setText(tPrice + " " + activity.getString(R.string.currency));
             priceTxt.setText(tPrice + "" );
@@ -126,7 +126,7 @@ public class ProductBottomSheet extends BottomSheetDialogFragment {
         addProduct.setOnClickListener(v -> {
             try {
                 Log.e("list_size", productMenuModelList.size() + " before add");
-                productMenuModelList.add(new StoreProductsModel.ProductBean(product.getProduct_name(), product.getProduct_price(), productQuantity));
+                productMenuModelList.add(new StoreProductsModel.ProductBean(product.getProduct_name(), Integer.parseInt(product.getProduct_price()), productQuantity));
                 Log.e("list_size", productMenuModelList.size() + " after add");
             } catch (Exception e) {
                 Log.e("list_size", "add Exception" + e.getMessage());

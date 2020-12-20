@@ -56,11 +56,14 @@ public class ProductMenuAdapter extends RecyclerView.Adapter<ProductMenuAdapter.
         }
 
         holder.itemView.setOnClickListener(v -> {
-            MenuId = incomingList.get(position).getId();
+            try {
+                MenuId = incomingList.get(position).getId();
 
-            menuClick.menuClick(incomingList.get(position).getId());
+                menuClick.menuClick(incomingList.get(position).getId());
 
-            notifyDataSetChanged();
+                notifyDataSetChanged();
+            }catch (Exception e){}
+
         });
 
     }

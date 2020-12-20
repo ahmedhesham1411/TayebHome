@@ -2,6 +2,7 @@ package com.uriallab.haat.haat.viewModels;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -37,13 +38,20 @@ public class ComplaintDetailsViewModel {
 
         itemsBeanObservable.set(itemsBean);
 
-        if (itemsBean.getComplaint_Status_ID() == 1)
-            isFinishedObservable.set(false);
-        else
+        //Toast.makeText(activity, String.valueOf(itemsBean.getComplaint_Status_ID()), Toast.LENGTH_SHORT).show();
+
+
+
+
+        if (itemsBean.getComplaint_Status_ID() == 2 )
             isFinishedObservable.set(true);
+        else
+            isFinishedObservable.set(false);
 
         if (ConfigurationFile.getCurrentLanguage(activity).equals("ar"))
             rotation.set(180);
+
+
     }
 
     public void complainAction(final int actionType) {

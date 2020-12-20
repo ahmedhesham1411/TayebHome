@@ -1,12 +1,14 @@
 package com.uriallab.haat.haat.UI.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.uriallab.haat.haat.DataModels.NotificationsModel;
+import com.uriallab.haat.haat.LocalNotification.TrackingDelegate;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.UI.Adapters.NotificationsAdapter;
 import com.uriallab.haat.haat.Utilities.Utilities;
@@ -16,6 +18,7 @@ import com.uriallab.haat.haat.viewModels.NotificationsViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +48,7 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false);
 
+        startService();
         initRecycler();
 
         viewModel = new NotificationsViewModel(this);
@@ -62,7 +66,27 @@ public class NotificationFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         binding.notificationRecycler.setLayoutManager(mLayoutManager);
 
-        binding.notificationRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
+                        //code to fetch more data for endless scrolling
+                        try {
+                            nextPage++;
+                            if (nextPage <= viewModel.lastPage && !viewModel.isLoading) {
+                                viewModel.getNotificationsRequest(nextPage);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
+/*        binding.notificationRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -71,7 +95,7 @@ public class NotificationFragment extends Fragment {
                     viewModel.getNotificationsRequest(nextPage);
                 }
             }
-        });
+        });*/
         Utilities.runAnimation(binding.notificationRecycler, 1);
     }
 
@@ -81,4 +105,18 @@ public class NotificationFragment extends Fragment {
         notificationsList.addAll(notificationsModel);
         notificationsAdapter.notifyDataSetChanged();
     }
+
+    public void updateRecycler1(List<NotificationsModel.ResultBean.NotficationsBean> notificationsModel) {
+        if (viewModel.lastPage == 1)
+            notificationsList.clear();
+        notificationsList.addAll(notificationsModel);
+        notificationsAdapter.notifyDataSetChanged();
+        Utilities.runAnimation(binding.notificationRecycler, 1);
+    }
+    public void startService() {
+        // TODO: 6/10/2020
+        Intent myService = new Intent(getContext(), TrackingDelegate.class);
+        getActivity().startService(myService);
+    }
+
 }

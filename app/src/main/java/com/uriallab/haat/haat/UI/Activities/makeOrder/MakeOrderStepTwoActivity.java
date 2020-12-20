@@ -55,12 +55,11 @@ public class MakeOrderStepTwoActivity extends AppCompatActivity implements OnMap
 
     private MakeOrderStepTwoViewModel viewModel;
 
-    public LatLng latLngTo, storeLatLng;
+    public LatLng latLngTo;
     public GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
     public boolean isService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +70,6 @@ public class MakeOrderStepTwoActivity extends AppCompatActivity implements OnMap
         MakeOrderModel makeOrderModel = GlobalVariables.makeOrderModel;
 
         isService = makeOrderModel.isService();
-
-        if (!isService)
-            storeLatLng = new LatLng(makeOrderModel.getLat(), makeOrderModel.getLng());
 
         binding.locationTxt.setSelected(true);
         binding.distenationTxt.setSelected(true);
@@ -173,13 +169,6 @@ public class MakeOrderStepTwoActivity extends AppCompatActivity implements OnMap
                 .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(true))));
 
-        if (!isService) {
-            mMap.addMarker(new MarkerOptions()
-                    .position(storeLatLng)
-                    .anchor(0.5f, 0.5f)
-                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(false))));
-        }
-
         getAddressFromLatLng(binding.locationTxt, latLngTo);
         Log.e("cameraMidLatLng", latLngTo.latitude + "\t" + latLngTo.longitude);
     }
@@ -238,15 +227,15 @@ public class MakeOrderStepTwoActivity extends AppCompatActivity implements OnMap
                 viewModel.userLat = data.getExtras().getDouble("lat");
                 viewModel.userLng = data.getExtras().getDouble("lng");
 
-                viewModel.drawDirection();
+                //viewModel.drawDirection();
             }
         } else if (requestCode == 122) {
             if (!data.getExtras().getString("address").equals("none")) {
                 viewModel.distenationObservable.set(data.getExtras().getString("address"));
                 if (!data.getExtras().getString("add_address").equals("none"))
                     viewModel.additionalAddressObservable.set(data.getExtras().getString("add_address"));
-                viewModel.storeLat = data.getExtras().getDouble("lat");
-                viewModel.storeLng = data.getExtras().getDouble("lng");
+                viewModel.shopLat = data.getExtras().getDouble("lat");
+                viewModel.shopLng = data.getExtras().getDouble("lng");
 
                 viewModel.drawDirection();
 
@@ -263,7 +252,7 @@ public class MakeOrderStepTwoActivity extends AppCompatActivity implements OnMap
                 viewModel.userLat = data.getExtras().getDouble("lat");
                 viewModel.userLng = data.getExtras().getDouble("lng");
 
-                viewModel.drawDirection();
+                //viewModel.drawDirection();
             }
         }
     }

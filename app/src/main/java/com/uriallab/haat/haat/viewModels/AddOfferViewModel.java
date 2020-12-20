@@ -107,6 +107,99 @@ public class AddOfferViewModel {
         return !(priceD <= 0);
     }
 
+  /*  public void sendOffer() {
+
+        Utilities.hideKeyboard(activity);
+
+        if (offerPrice.get().equals("")) {
+            Utilities.toastyRequiredFieldCustom(activity, activity.getString(R.string.enter_price));
+        } else if (Double.parseDouble(offerPrice.get()) <= 0) {
+            Utilities.toastyRequiredFieldCustom(activity, activity.getString(R.string.enter_price));
+        } else {
+            final LoadingDialog loadingDialog = new LoadingDialog();
+
+            JSONObject jsonParams = new JSONObject();
+            try {
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                    jsonParams.put("Offer_Price", offerPrice.get());
+                    jsonParams.put("Order_ID", orderId);
+                    jsonParams.put("Driver_Long", GlobalVariables.LOCATION_LNG);
+                    jsonParams.put("Driver_Lat", GlobalVariables.LOCATION_LAT);
+                    jsonParams.put("Client_ID", clientId);
+                    jsonParams.put("Driver_ID", LoginSession.getUserData(activity).getResult().getUserData().getUserUID());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            APIModel.postMethod(activity, "Driver/SetOrderOffer", jsonParams, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                    Log.e("response", responseString + "Error");
+                    switch (statusCode) {
+                        case 401:
+                            try {
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                if (jsonObject.has("error"))
+                                    Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("Message"));
+                                else
+                                    Utilities.toastyError(activity, responseString + "    ");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case 400:
+                            try {
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                if (jsonObject.has("error"))
+                                    Utilities.toastyError(activity, jsonObject.getJSONObject("error").getString("Message"));
+                                else
+                                    Utilities.toastyError(activity, responseString + "   ");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        default:
+                            APIModel.handleFailure(activity, statusCode, responseString, new APIModel.RefreshTokenListener() {
+                                @Override
+                                public void onRefresh() {
+                                    sendOffer();
+                                }
+                            });
+                            break;
+                    }
+                }
+
+                @Override
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                    Log.e("response", responseString);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("sentType", 2);
+                    bundle.putString("orderId", orderId);
+                    bundle.putString("clientId", clientId);
+                    IntentClass.goToActivity(activity, SentSuccessfullyActivity.class, bundle);
+
+                    activity.finish();
+                }
+
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    Dialogs.showLoading(activity, loadingDialog);
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    Dialogs.dismissLoading(loadingDialog);
+                }
+            });
+        }
+    }*/
+
     public void sendOffer() {
 
         Utilities.hideKeyboard(activity);
@@ -199,7 +292,6 @@ public class AddOfferViewModel {
             });
         }
     }
-
     public TextWatcher getSearchText() {
         return new TextWatcher() {
             @Override

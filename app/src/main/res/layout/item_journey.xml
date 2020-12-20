@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content">
 
                 <FrameLayout
-                    android:background="@drawable/circle_grey"
+                    android:background="@drawable/circle_aa"
                     android:layout_width="35dp"
                     android:layout_height="35dp">
                     <ImageView
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content">
 
                 <FrameLayout
-                    android:background="@drawable/circle_grey"
+                    android:background="@drawable/circle_aa"
                     android:layout_width="35dp"
                     android:layout_height="35dp">
                     <ImageView

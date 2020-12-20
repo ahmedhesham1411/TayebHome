@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
+import com.uriallab.haat.haat.CustomSpinnerAdapter;
 import com.uriallab.haat.haat.DataModels.DriverRegisterModel;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.Utilities.RealPathUtil;
@@ -35,19 +36,21 @@ public class ThirdStepActivity extends AppCompatActivity {
     public ArrayAdapter<String> carAdapter;
     public ArrayAdapter<String> carTypeAdapter;
     public ArrayAdapter<String> carYearAdapter;
-
+    public CustomSpinnerAdapter customSpinnerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_third_step);
 
+        binding.typeArrow1.setImageResource(R.drawable.arrow_left);
         binding.typeArrow.setImageResource(R.drawable.arrow_left);
         binding.carArrow.setImageResource(R.drawable.arrow_left);
         binding.yearArrow.setImageResource(R.drawable.arrow_left);
         binding.carArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.yearArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.typeArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
+        binding.typeArrow1.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
 
         Gson gson = new Gson();
         DriverRegisterModel driverRegisterModel = gson.fromJson(getIntent().getStringExtra("myjson"), DriverRegisterModel.class);
@@ -105,6 +108,20 @@ public class ThirdStepActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        customSpinnerAdapter = new CustomSpinnerAdapter(this, 0, viewModel.categoryList, viewModel.selectedValues);
+        binding.carTypeSpinner1.setAdapter(customSpinnerAdapter);
+        binding.carTypeSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.type = viewModel.categoryList.get(position).getTitle();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
     }
 

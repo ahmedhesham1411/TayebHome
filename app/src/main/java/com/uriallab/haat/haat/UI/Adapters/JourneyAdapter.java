@@ -53,6 +53,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.JourneyV
             holder.binding.meTxt.setTextColor(activity.getResources().getColor(R.color.colorWhite));
             holder.binding.recievingLoc.setTextColor(activity.getResources().getColor(R.color.colorWhite));
             holder.binding.deliveringLoc.setTextColor(activity.getResources().getColor(R.color.colorWhite));
+            holder.binding.meLocImg.setColorFilter(activity.getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+
         }
 
         try {
@@ -66,12 +68,12 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.JourneyV
         holder.binding.storeNameTxt.setText(incomingList.get(position).getOrd_Shop_Nm());
         holder.binding.orderDetails.setText(incomingList.get(position).getOrd_Dtls());
 
-        holder.binding.deliverLocImg.setImageResource(R.drawable.delivering);
-        holder.binding.recieveLocImg.setImageResource(R.drawable.delivering);
+        holder.binding.deliverLocImg.setImageResource(R.drawable.clock);
+        holder.binding.recieveLocImg.setImageResource(R.drawable.location);
         holder.binding.meLocImg.setImageResource(R.drawable.location);
 
-        holder.binding.deliverLocImg.setColorFilter(activity.getResources().getColor(R.color.colorMoov), PorterDuff.Mode.SRC_ATOP);
-        holder.binding.recieveLocImg.setColorFilter(activity.getResources().getColor(R.color.colorMoov), PorterDuff.Mode.SRC_ATOP);
+        holder.binding.deliverLocImg.setColorFilter(activity.getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+        holder.binding.recieveLocImg.setColorFilter(activity.getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         holder.binding.meLocImg.setColorFilter(activity.getResources().getColor(R.color.colorMoov), PorterDuff.Mode.SRC_ATOP);
 
         holder.itemView.setOnClickListener(view -> {
@@ -90,7 +92,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.JourneyV
             }
         });
 
-        holder.binding.deliverLocLin.setOnClickListener(view -> {
+      /*  holder.binding.deliverLocLin.setOnClickListener(view -> {
             try {
                 IntentClass.goToLocationOnMap(activity,
                         Double.parseDouble(incomingList.get(position).getClient_Lat()),
@@ -98,7 +100,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.JourneyV
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        });*/
     }
 
     @Override

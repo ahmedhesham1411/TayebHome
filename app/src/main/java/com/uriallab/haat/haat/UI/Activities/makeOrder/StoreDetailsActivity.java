@@ -1,11 +1,13 @@
 package com.uriallab.haat.haat.UI.Activities.makeOrder;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,31 +89,55 @@ public class StoreDetailsActivity extends AppCompatActivity implements MenuClick
     }
 
     public void initMenuRecycler(List<ProductMenuModel.ResultBean.CategoryBean> productsEntities) {
-        ProductMenuAdapter productMenuAdapter = new ProductMenuAdapter(this, productsEntities, productsEntities.get(0).getId(), this);
-        binding.menuRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.menuRecycler.setAdapter(productMenuAdapter);
-        Utilities.runAnimation(binding.menuRecycler, 2);
-    }
-
-    public void updateProductsRecycler(List<ProductsModel.ResultEntity.ProductsEntity> productsMenus, int catId) {
-        productsMenuList.clear();
-        productsMenuList2.clear();
-        productsMenuList2.addAll(productsMenus);
-        List<ProductsModel.ResultEntity.ProductsEntity> tempList = new ArrayList<>();
-        for (int i = 0; i < productsMenuList2.size(); i++) {
-            productsMenuList2.get(i).setSelected(false);
-            if (productsMenuList2.get(i).getProduct_cat() == catId)
-                tempList.add(productsMenuList2.get(i));
+        try {
+            ProductMenuAdapter productMenuAdapter = new ProductMenuAdapter(this, productsEntities, productsEntities.get(0).getId(), this);
+            binding.menuRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            binding.menuRecycler.setAdapter(productMenuAdapter);
+            Utilities.runAnimation(binding.menuRecycler, 2);
+        }catch (Exception e){
+            Toast.makeText(this, "initMenuRecycler", Toast.LENGTH_SHORT).show();
         }
 
-        productsMenuList.addAll(tempList);
 
-        productsAdapter = new ProductsAdapter(this, productsMenuList, viewModel.productMenuModelList, viewModel.totalPrice);
-        binding.productsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        binding.productsRecycler.setAdapter(productsAdapter);
-        Utilities.runAnimation(binding.productsRecycler, 2);
     }
 
+/*    public void initRecyclerMenu(Activity activity) {
+        StoreProductsAdapter2 productMenuAdapter = new StoreProductsAdapter2(this);
+        binding.recyclerMenu.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.recyclerMenu.setAdapter(productMenuAdapter);
+        Utilities.runAnimation(binding.recyclerMenu, 2);
+    }*/
+
+   /* public void updateProductsRecycler(List<ProductsModel.ResultEntity.ProductsEntity> productsMenus, int catId) {
+        try {
+
+            productsMenuList.clear();
+            productsMenuList2.clear();
+            productsMenuList2.addAll(productsMenus);
+            List<ProductsModel.ResultEntity.ProductsEntity> tempList = new ArrayList<>();
+            for (int i = 0; i < productsMenuList2.size(); i++) {
+                productsMenuList2.get(i).setSelected(false);
+                if (productsMenuList2.get(i).getProduct_cat() == catId)
+                    tempList.add(productsMenuList2.get(i));
+            }
+
+            productsMenuList.addAll(tempList);
+            productsAdapter = new ProductsAdapter(this, productsMenuList, viewModel.productMenuModelList, viewModel.totalPrice);
+            binding.productsRecycler.setLayoutManager(new LinearLayoutManager(this));
+            binding.productsRecycler.setAdapter(productsAdapter);
+            Utilities.runAnimation(binding.productsRecycler, 2);
+        }catch (Exception e){
+            Toast.makeText(this, "updateProductsRecycler", Toast.LENGTH_SHORT).show();
+        }
+
+    }*/
+
+    public void initProductsRecycler(List<ProductsModel.ResultEntity.ProductsEntity> imagesList) {
+        ProductsAdapter imagesAdapter = new ProductsAdapter(this, imagesList);
+        binding.productsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.productsRecycler.setAdapter(imagesAdapter);
+        Utilities.runAnimation(binding.productsRecycler, 2);
+    }
 
     private void arrowColor() {
         binding.rateArrow.setImageResource(R.drawable.arrow_left);
@@ -131,12 +157,31 @@ public class StoreDetailsActivity extends AppCompatActivity implements MenuClick
             if (requestCode == 369) {
                 if (!data.getExtras().getString("address").equals("none")) {
 
-                    binding.storeLocation.setText(data.getExtras().getString("address"));
+                    try {
+                        binding.storeLocation.setText(data.getExtras().getString("address"));
 
-                    viewModel.lat = data.getExtras().getDouble("lat");
-                    viewModel.lng = data.getExtras().getDouble("lng");
+                        viewModel.lat = data.getExtras().getDouble("lat");
+                        viewModel.lng = data.getExtras().getDouble("lng");
 
 
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                            double distance = Utilities.getKilometers(
+                                    GlobalVariables.LOCATION_LAT,
+                                    GlobalVariables.LOCATION_LNG,
+                                    data.getExtras().getDouble("lat"),
+                                    data.getExtras().getDouble("lng"));
+
+                            binding.distanceFromYou.setText(getString(R.string.distance_from_you) + "  " + Double.parseDouble(Utilities.roundPrice(distance)) +" "+
+                                    getString(R.string.km));
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(this, "onActivityResult", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else if (data.getExtras().getString("address").equals("none")){
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -146,27 +191,33 @@ public class StoreDetailsActivity extends AppCompatActivity implements MenuClick
                                 data.getExtras().getDouble("lat"),
                                 data.getExtras().getDouble("lng"));
 
-                        binding.distanceFromYou.setText(getString(R.string.distance_from_you) + "  " + Utilities.roundPrice(distance) +
+                        binding.distanceFromYou.setText(getString(R.string.distance_from_you) + "  " + Double.parseDouble(Utilities.roundPrice(distance)) +" "+
                                 getString(R.string.km));
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(this, "onResult", Toast.LENGTH_SHORT).show();
+            //e.printStackTrace();
         }
     }
 
     @Override
     public void menuClick(int categoryId) {
-        List<ProductsModel.ResultEntity.ProductsEntity> tempList = new ArrayList<>();
-        for (int i = 0; i < productsMenuList2.size(); i++) {
-            if (productsMenuList2.get(i).getProduct_cat() == categoryId)
-                tempList.add(productsMenuList2.get(i));
+        try {
+            List<ProductsModel.ResultEntity.ProductsEntity> tempList = new ArrayList<>();
+            for (int i = 0; i < productsMenuList2.size(); i++) {
+                if (productsMenuList2.get(i).getProduct_cat() == categoryId)
+                    tempList.add(productsMenuList2.get(i));
+            }
+
+            productsMenuList.clear();
+            productsMenuList.addAll(tempList);
+
+            productsAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            Toast.makeText(this, "menuClick method", Toast.LENGTH_SHORT).show();
         }
 
-        productsMenuList.clear();
-        productsMenuList.addAll(tempList);
-
-        productsAdapter.notifyDataSetChanged();
     }
 }

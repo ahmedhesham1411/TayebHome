@@ -63,174 +63,169 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_below="@id/lin1"
-            android:orientation="vertical"
+            android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
-            <TextView
-                android:id="@+id/email_txt"
-                android:text="@string/amount"
-                android:textColor="@color/colorBlack"
-                android:layout_marginTop="50dp"
-                android:layout_marginStart="20dp"
-                android:textAlignment="viewStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                app:addTextChangedListener="@{createInvoiceVM.getSearchText()}"
-                app:error="@{createInvoiceVM.amountError}"
-                android:id="@+id/email_edt"
-                android:inputType="numberDecimal"
-                android:textAlignment="viewStart"
-                android:hint="@string/enter_amount"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/shape_rounded_dark_grey"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
-
-
             <LinearLayout
-                android:layout_marginTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="@string/delivering_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="1dp"/>
-
-                <TextView
-                    android:textColor="@color/colorMoov"
-                    android:text="@{createInvoiceVM.price}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="@string/total_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="1dp"/>
-
-                <TextView
-                    android:textColor="@color/colorBlue"
-                    android:text="@{createInvoiceVM.totalPrice}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:text="@string/invoice_img"
-                android:textColor="@color/colorBlack"
-                android:layout_marginTop="50dp"
-                android:layout_marginStart="20dp"
-                android:textAlignment="viewStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:onClick="@{()->createInvoiceVM.getPhoto()}"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:id="@+id/alert_txt"
+                    android:text="@string/alert"
+                    android:textColor="@color/colorGreen"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="20dp"
-                    android:background="@drawable/shape_rounded_white_stroke"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp">
+                    android:textAlignment="viewStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-                    <ImageView
-                        android:id="@+id/add_img"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"/>
+
+                <TextView
+                    android:id="@+id/email_txt"
+                    android:text="@string/send_invoices"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="20dp"
+                    android:textAlignment="viewStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:textSize="10sp"
-                        android:text="@string/add_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/service_fee"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="viewStart"
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="@{createInvoiceVM.price}"
+                        android:gravity="center_vertical"
+                        android:id="@+id/email_edt"
+                        android:textAlignment="viewStart"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/shape_rounded_dark_grey"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp" />
 
                 </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="15dp"
-                    android:orientation="vertical">
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        app:riv_corner_radius="8dp"
-                        android:layout_marginStart="15dp"
-                        android:id="@+id/bill_img"
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/goods_fee"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="viewStart"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_margin="8dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_weight=".5"
+                        android:layout_height="wrap_content" />
 
-                    <ImageView
-                        android:visibility="invisible"
-                        android:id="@+id/delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_cancel_red"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        app:addTextChangedListener="@{createInvoiceVM.getSearchText()}"
+                        app:error="@{createInvoiceVM.amountError}"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="viewStart"
+                        android:hint="@string/enter_goods_fee"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/shape_rounded_dark_grey"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/total_fee_"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="viewStart"
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="@{createInvoiceVM.totalPrice}"
+                        android:gravity="center_vertical"
+                        android:textAlignment="viewStart"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/shape_rounded_dark_grey"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:layout_gravity="center"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/shape_rounded_blue"
+                    android:layout_alignParentBottom="true"
+                    android:onClick="@{()->createInvoiceVM.sendInvoice()}"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingEnd="60dp"
+                    android:paddingStart="60dp"
+                    android:text="@string/send_invoice"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp" />
 
             </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
         <Button
-            android:background="@color/colorBlue"
+            android:background="@color/colorMoov"
             android:layout_alignParentBottom="true"
-            android:onClick="@{()->createInvoiceVM.sendInvoice()}"
+            android:onClick="@{()->createInvoiceVM.finishOrder()}"
             android:textAllCaps="false"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/login_btn"
             android:gravity="center"
-            android:text="@string/send_invoice"
+            android:text="@string/service_done"
             android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="50dp" />

@@ -1,6 +1,9 @@
 package com.uriallab.haat.haat.Utilities;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.uriallab.haat.haat.DataModels.MakeOrderModel;
 import com.uriallab.haat.haat.UI.Fragments.ActiveJourneyFragment;
 import com.uriallab.haat.haat.UI.Fragments.ActiveOrdersFragment;
@@ -12,6 +15,8 @@ import com.uriallab.haat.haat.UI.Fragments.NewJourneyFragment;
 import com.uriallab.haat.haat.UI.Fragments.NotificationFragment;
 import com.uriallab.haat.haat.UI.Fragments.OrdersFragment;
 
+
+
 /**
  * Created by MAHMOUD on 12/12/2018.
  */
@@ -20,8 +25,11 @@ public abstract class GlobalVariables {
 
     public static final String GET_ADDRESSES_FROM_LATLNG_URL = "https://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 
-    public static double LOCATION_LAT = 0;
-    public static double LOCATION_LNG = 0;
+
+    public static double LOCATION_LAT ;
+    public static double LOCATION_LNG ;
+
+
 
     public static String qrCode = "";
 

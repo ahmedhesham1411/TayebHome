@@ -438,7 +438,7 @@ public class Camera {
     public static Bitmap resizeBitmap(Activity activity, Bitmap bitmapImage) {
         float aspectRatio = bitmapImage.getWidth() /
                 (float) bitmapImage.getHeight();
-        int width = 480;
+        int width = 150;
         int height = Math.round(width / aspectRatio);
         Bitmap bitmap = Bitmap.createScaledBitmap(bitmapImage, width, height, false);
         Log.e("SIZE_BITMAP", bitmap.getWidth() + " " + bitmap.getHeight());
@@ -448,8 +448,8 @@ public class Camera {
         int imageHeight = bitmapImage.getHeight();
         int resultWidth;
         int resultHeight;
-        int reqWidth = 600;
-        int reqHeight = 750;
+        int reqWidth = 200;
+        int reqHeight = 250;
 
         int diffWidth = imageWidth - reqWidth;
         int diffHeight = imageHeight - reqHeight;

@@ -1,6 +1,7 @@
 package com.uriallab.haat.haat.UI.Fragments;
 
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 import com.uriallab.haat.haat.API.APIModel;
+import com.uriallab.haat.haat.LocalNotification.TrackingDelegate;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.SharedPreferences.LoginSession;
 import com.uriallab.haat.haat.databinding.FragmentMoreBinding;
@@ -35,7 +37,7 @@ public class MoreFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_more, container, false);
 
         arrowColors();
-
+        startService();
         return binding.getRoot();
     }
 
@@ -57,10 +59,19 @@ public class MoreFragment extends Fragment {
         binding.editProfileArrow.setImageResource(R.drawable.arrow_left);
         binding.commentsArrow.setImageResource(R.drawable.arrow_left);
         binding.settingArrow.setImageResource(R.drawable.arrow_left);
+        binding.cancelArrow.setImageResource(R.drawable.arrow_left);
 
         binding.profileArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.editProfileArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.commentsArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
         binding.settingArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
+        binding.cancelArrow.setColorFilter(getResources().getColor(R.color.colorTextHint), PorterDuff.Mode.SRC_ATOP);
+
+    }
+
+    public void startService() {
+        // TODO: 6/10/2020
+        Intent myService = new Intent(getContext(), TrackingDelegate.class);
+        getActivity().startService(myService);
     }
 }

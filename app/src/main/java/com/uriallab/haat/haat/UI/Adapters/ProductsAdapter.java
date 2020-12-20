@@ -1,5 +1,6 @@
 package com.uriallab.haat.haat.UI.Adapters;
 
+import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MenuVi
 
     private ObservableField<String> totalPrice;
 
+    public ProductsAdapter(StoreDetailsActivity activity, List<ProductsModel.ResultEntity.ProductsEntity> incomingList) {
+        this.activity = activity;
+        this.incomingList = incomingList;
+    }
+
+/*
     public ProductsAdapter(StoreDetailsActivity activity, List<ProductsModel.ResultEntity.ProductsEntity> incomingList,
                            List<StoreProductsModel.ProductBean> productMenuModelList, ObservableField<String> totalPrice) {
         this.activity = activity;
@@ -40,6 +47,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MenuVi
         this.incomingList = incomingList;
         this.totalPrice = totalPrice;
     }
+*/
 
     @Override
     public MenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,7 +63,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MenuVi
 
         holder.binding.productName.setText(incomingList.get(position).getProduct_name());
         holder.binding.productDesc.setText(incomingList.get(position).getProduct_description());
-        holder.binding.productPrice.setText((incomingList.get(position).getProduct_price()) + "");
+        holder.binding.productPrice.setText((Double.parseDouble(incomingList.get(position).getProduct_price())) + "");
 
         holder.binding.deleteQuantity.setImageResource(R.drawable.rubish);
         holder.binding.deleteQuantity.setColorFilter(activity.getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);

@@ -148,8 +148,8 @@
                                 android:layout_height="wrap_content" />
 
                             <TextView
-                                android:text="@{complaintVM.isFinishedObservable? @string/proessed : @string/waiting_processed}"
-                                android:textColor="@{complaintVM.isFinishedObservable? @color/colorBlue : @color/colorMoov}"
+                                android:id="@+id/details"
+
                                 android:layout_marginTop="5dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
@@ -310,8 +310,19 @@
 
                 </LinearLayout>
 
+
                 <TextView
-                    android:visibility="@{complaintVM.isFinishedObservable? View.VISIBLE: View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/app_feadback"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <TextView
                     android:text="@string/we_aplogize"
                     android:gravity="center"
                     android:layout_marginTop="10dp"

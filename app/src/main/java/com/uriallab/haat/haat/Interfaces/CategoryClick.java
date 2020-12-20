@@ -5,5 +5,7 @@ package com.uriallab.haat.haat.Interfaces;
  */
 
 public interface CategoryClick {
-    void categoryClick(String type, String category);
+    //void categoryClick(String img, String name, String id);
+    void categoryClick(String type, int categoryId);
+
 }

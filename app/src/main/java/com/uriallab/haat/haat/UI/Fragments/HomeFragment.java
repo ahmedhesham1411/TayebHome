@@ -1,6 +1,7 @@
 package com.uriallab.haat.haat.UI.Fragments;
 
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,14 +13,17 @@ import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.uriallab.haat.haat.DataModels.CategoryModel;
 import com.uriallab.haat.haat.DataModels.ServerStoresModel;
 import com.uriallab.haat.haat.Interfaces.CategoryClick;
+import com.uriallab.haat.haat.LocalNotification.TrackingDelegate;
 import com.uriallab.haat.haat.R;
 import com.uriallab.haat.haat.UI.Activities.Updates.StoresActivity;
+import com.uriallab.haat.haat.UI.Activities.makeOrder.MakeOrderFirstStepActivity;
 import com.uriallab.haat.haat.UI.Adapters.CategoryAdapter;
 import com.uriallab.haat.haat.UI.Adapters.FamousPlacesAdapter;
 import com.uriallab.haat.haat.Utilities.IntentClass;
@@ -50,6 +54,7 @@ public class HomeFragment extends Fragment implements CategoryClick {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
+        startService();
         binding.searchIcon.setImageResource(R.drawable.search);
         binding.searchIcon.setColorFilter(getResources().getColor(R.color.colorBlue), PorterDuff.Mode.SRC_ATOP);
 
@@ -80,8 +85,9 @@ public class HomeFragment extends Fragment implements CategoryClick {
 
     public void initCategoryRecycler(List<CategoryModel.ResultBean.CategoryBean> list) {
         CategoryAdapter categoryAdapter = new CategoryAdapter(getActivity(), list, this);
+        LinearLayoutManager linearLayoutManager1 = (new GridLayoutManager(getContext(),2));
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        binding.categoryRecycler.setLayoutManager(layoutManager);
+        binding.categoryRecycler.setLayoutManager(linearLayoutManager1);
         binding.categoryRecycler.setAdapter(categoryAdapter);
         Utilities.runAnimation(binding.categoryRecycler, 2);
     }
@@ -99,13 +105,21 @@ public class HomeFragment extends Fragment implements CategoryClick {
     }
 
     @Override
-    public void categoryClick(String type, String category) {
+    public void categoryClick(String name, int id) {
+
         Bundle bundle = new Bundle();
-        bundle.putString("type", type);
-        bundle.putString("category", category);
-        bundle.putString("searchTxt", "");
-        bundle.putBoolean("isSearch", false);
-        IntentClass.goToActivity(getActivity(), StoresActivity.class, bundle);
+        bundle.putString("storeName", name);
+        //bundle.putString("shopImg", img);
+        bundle.putInt("categoryId", id);
+        bundle.putBoolean("isService", false);
+        IntentClass.goToActivity(getActivity(), MakeOrderFirstStepActivity.class, bundle);
+        //String aa ;
+    }
+
+    public void startService() {
+        // TODO: 6/10/2020
+        Intent myService = new Intent(getContext(), TrackingDelegate.class);
+        getActivity().startService(myService);
     }
 
 }
